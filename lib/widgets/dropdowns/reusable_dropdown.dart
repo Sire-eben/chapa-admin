@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../utils/__utils.dart';
@@ -41,7 +41,7 @@ class ReusableDropdownFormField<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final underlinedInputBorder = OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(
           color: AppColors.idleState,
           width: 1,
@@ -96,20 +96,20 @@ class ReusableDropdownFormField<T> extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                   enabledBorder: withBorder
                       ? OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide(
                               width: 1.2, color: AppColors.textFieldBorder),
                         )
                       : underlinedInputBorder,
                   focusedBorder: withBorder
                       ? OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide(
                               width: 1.2, color: AppColors.textFieldBorder),
                         )
                       : underlinedInputBorder,
                   errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.r),
+                      borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(
                         color: AppColors.error,
                         width: 1,
@@ -117,7 +117,7 @@ class ReusableDropdownFormField<T> extends StatelessWidget {
                   focusedErrorBorder: underlinedInputErrorBorder,
                   disabledBorder: withBorder
                       ? OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide(
                               width: 1.2, color: AppColors.textFieldBorder),
                         )

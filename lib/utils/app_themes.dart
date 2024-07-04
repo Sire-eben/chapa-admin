@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
-import "package:flutter_screenutil/flutter_screenutil.dart";
+// import "package:flutter_screenutil/flutter_screenutil.dart";
 import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
   AppColors._();
   static Color primary = const Color(0xFF135633);
   static Color transparentPrimary = const Color(0xFF135633).withOpacity(.1);
-  static Color secondary = Color.fromARGB(255, 185, 229, 203);
+  static Color secondary = const Color.fromARGB(255, 185, 229, 203);
   static Color fillColor = const Color(0xFFF9F9F9);
   static Color secondaryIconColor = const Color(0xFF84818A);
   static Color backgroundColor = const Color(0xFFEAEFF5);
@@ -67,7 +67,7 @@ class AppTheme {
           selectedLabelStyle: const TextStyle(fontSize: 12),
           unselectedLabelStyle: const TextStyle(fontSize: 12),
         ),
-        iconTheme: IconThemeData(color: Colors.black, size: 24.h),
+        iconTheme: const IconThemeData(color: Colors.black, size: 24),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -84,7 +84,7 @@ class AppTheme {
         ),
         appBarTheme: AppBarTheme(
           titleTextStyle:
-              AppStyles.urbanist18Smbd.copyWith(color: Colors.white),
+              AppStyles.urbanist18Smbd.copyWith(color: Colors.black),
           iconTheme: IconThemeData(color: AppColors.primary),
           backgroundColor: AppColors.white,
           foregroundColor: AppColors.white,
@@ -100,7 +100,7 @@ class AppTheme {
           prefixIconColor: AppColors.primary,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 18.h, horizontal: 30.w),
+              const EdgeInsets.symmetric(vertical: 18, horizontal: 30),
           border: OutlineInputBorder(
             borderSide: BorderSide(
               color: AppColors.primary,

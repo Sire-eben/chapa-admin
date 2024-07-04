@@ -29,6 +29,10 @@ class CachedImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String secureUrl = imageUrl;
+    if (imageUrl.contains("http://")) {
+      secureUrl = secureUrl.replaceAll("http://", "https://");
+    }
     return CachedNetworkImage(
       imageUrl: imageUrl,
       height: height,

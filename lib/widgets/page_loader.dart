@@ -1,6 +1,6 @@
 import 'package:chapa_admin/utils/__utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -19,7 +19,7 @@ class PageLoader extends StatelessWidget {
             color: Theme.of(context).primaryColor,
           ),
           if (message != null) ...[
-            Gap(12.h),
+            Gap(12),
             Text(
               message!,
               textAlign: TextAlign.center,
@@ -49,7 +49,7 @@ class PageLoaderWithPadding extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
             if (message != null) ...[
-              Gap(12.h),
+              Gap(12),
               Text(
                 message!,
                 textAlign: TextAlign.center,
@@ -79,7 +79,7 @@ class PageLoaderWithScaffold extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
             if (message != null) ...[
-              Gap(12.h),
+              Gap(12),
               Text(
                 message!,
                 textAlign: TextAlign.center,

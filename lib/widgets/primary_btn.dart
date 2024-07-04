@@ -1,6 +1,6 @@
 import 'package:chapa_admin/utils/__utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'loading.dart';
@@ -47,7 +47,7 @@ class PrimaryButton extends StatelessWidget {
           backgroundColor: backgroundColor ?? AppColors.primary,
           fixedSize: Size(width ?? double.maxFinite, height ?? 54),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 10.r),
+            borderRadius: BorderRadius.circular(borderRadius ?? 10),
           ),
           side: BorderSide(
             color: borderColor ?? Colors.transparent,

@@ -1,7 +1,7 @@
 import "package:chapa_admin/utils/__utils.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:flutter_screenutil/flutter_screenutil.dart";
+// import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:gap/gap.dart";
 
 class CustomTextField extends StatelessWidget {
@@ -80,7 +80,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final underlinedInputBorder = OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(10),
         borderSide: !withBorder
             ? BorderSide.none
             : BorderSide(
@@ -154,7 +154,7 @@ class CustomTextField extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 28),
                 enabledBorder: withBorder
                     ? OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
                             width: 1.4,
                             color: borderColor ?? AppColors.textFieldBorder),
@@ -162,14 +162,14 @@ class CustomTextField extends StatelessWidget {
                     : underlinedInputBorder,
                 focusedBorder: withBorder
                     ? OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
                             width: 1.4,
                             color: borderColor ?? AppColors.textFieldBorder),
                       )
                     : underlinedInputBorder,
                 errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(
                       color: AppColors.error,
                       width: 1,
@@ -177,7 +177,7 @@ class CustomTextField extends StatelessWidget {
                 focusedErrorBorder: underlinedInputErrorBorder,
                 disabledBorder: withBorder
                     ? OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
                             width: 1.4,
                             color: borderColor ?? AppColors.textFieldBorder),
@@ -236,7 +236,7 @@ class CustomTextField extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
 //     final underlinedInputBorder = OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(10.r),
+//         borderRadius: BorderRadius.circular(10),
 //         borderSide: BorderSide(
 //           color: AppColors.textFieldBorder,
 //           width: 1,
@@ -298,7 +298,7 @@ class CustomTextField extends StatelessWidget {
 //                 const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
 //             border: widget.withBorder
 //                 ? OutlineInputBorder(
-//                     borderRadius: BorderRadius.circular(8.r),
+//                     borderRadius: BorderRadius.circular(8),
 //                     borderSide: BorderSide(
 //                         width: 1.2,
 //                         color: widget.borderColor ?? AppColors.textFieldBorder),
@@ -306,7 +306,7 @@ class CustomTextField extends StatelessWidget {
 //                 : underlinedInputBorder,
 //             enabledBorder: widget.withBorder
 //                 ? OutlineInputBorder(
-//                     borderRadius: BorderRadius.circular(8.r),
+//                     borderRadius: BorderRadius.circular(8),
 //                     borderSide: BorderSide(
 //                         width: 1.2,
 //                         color: widget.borderColor ?? AppColors.textFieldBorder),
@@ -314,14 +314,14 @@ class CustomTextField extends StatelessWidget {
 //                 : underlinedInputBorder,
 //             focusedBorder: widget.withBorder
 //                 ? OutlineInputBorder(
-//                     borderRadius: BorderRadius.circular(8.r),
+//                     borderRadius: BorderRadius.circular(8),
 //                     borderSide: BorderSide(
 //                         width: 1.2,
 //                         color: widget.borderColor ?? AppColors.textFieldBorder),
 //                   )
 //                 : underlinedInputBorder,
 //             errorBorder: OutlineInputBorder(
-//                 borderRadius: BorderRadius.circular(8.r),
+//                 borderRadius: BorderRadius.circular(8),
 //                 borderSide: const BorderSide(
 //                   color: AppColors.error,
 //                   width: 1,
@@ -329,7 +329,7 @@ class CustomTextField extends StatelessWidget {
 //             focusedErrorBorder: underlinedInputErrorBorder,
 //             disabledBorder: widget.withBorder
 //                 ? OutlineInputBorder(
-//                     borderRadius: BorderRadius.circular(8.r),
+//                     borderRadius: BorderRadius.circular(8),
 //                     borderSide: BorderSide(
 //                         width: 1.2,
 //                         color: widget.borderColor ?? AppColors.textFieldBorder),

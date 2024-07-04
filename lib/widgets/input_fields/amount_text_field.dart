@@ -1,7 +1,7 @@
 import "package:chapa_admin/utils/app_themes.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:flutter_screenutil/flutter_screenutil.dart";
+// import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:intl/intl.dart";
 import "package:nb_utils/nb_utils.dart";
 
@@ -75,12 +75,12 @@ class AmountTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final underlinedInputBorder = OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(10),
         borderSide: !withBorder
             ? BorderSide.none
             : BorderSide(
                 color: borderColor ?? AppColors.textFieldBorder,
-                width: 1,
+                width: 1.4,
               ));
 
     final underlinedInputErrorBorder = underlinedInputBorder.copyWith(
@@ -97,7 +97,7 @@ class AmountTextField extends StatelessWidget {
             labelText ?? "Enter Amount",
             style: labelStyle ??
                 AppStyles.urbanist14Md
-                    .copyWith(color: AppColors.appBlack, fontSize: 13.sp),
+                    .copyWith(color: AppColors.appBlack, fontSize: 13),
           ),
           10.height,
         ],
@@ -124,7 +124,7 @@ class AmountTextField extends StatelessWidget {
           decoration: decoration ??
               InputDecoration(
                 filled: true,
-                fillColor: fillColor ?? AppColors.fillColor,
+                fillColor: fillColor,
                 suffixText: suffixText,
                 prefixText: prefixText,
                 prefixIcon: prefixIcon,
@@ -136,15 +136,17 @@ class AmountTextField extends StatelessWidget {
                     AppStyles.urbanist12Rg.copyWith(color: AppColors.error),
                 prefixStyle:
                     prefixStyle ?? AppStyles.interGeneral(14, FontWeight.w600),
-                labelStyle: labelStyle,
+                labelStyle: labelStyle ??
+                    AppStyles.urbanist14Md
+                        .copyWith(color: AppColors.secondaryIconColor),
+                // labelText: labelText,
                 hintStyle: hintStyle ??
-                    AppStyles.urbanist12Rg
-                        .copyWith(color: AppColors.textFieldBorder),
+                    AppStyles.urbanist12Rg.copyWith(color: AppColors.appBlack),
                 contentPadding: contentPadding ??
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 28),
                 enabledBorder: withBorder
                     ? OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
                             width: 1.2,
                             color: borderColor ?? AppColors.textFieldBorder),
@@ -152,14 +154,14 @@ class AmountTextField extends StatelessWidget {
                     : underlinedInputBorder,
                 focusedBorder: withBorder
                     ? OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
                             width: 1.2,
                             color: borderColor ?? AppColors.textFieldBorder),
                       )
                     : underlinedInputBorder,
                 errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       color: AppColors.error,
                       width: 1,
@@ -167,7 +169,7 @@ class AmountTextField extends StatelessWidget {
                 focusedErrorBorder: underlinedInputErrorBorder,
                 disabledBorder: withBorder
                     ? OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
                             width: 1.2,
                             color: borderColor ?? AppColors.textFieldBorder),
