@@ -27,7 +27,7 @@ class AppTheme {
 
   static ThemeData _baseTheme(BuildContext context) => ThemeData(
         useMaterial3: true,
-        toggleableActiveColor: AppColors.primary,
+        // toggleButtonsTheme: ToggleButtonsThemeData(),
         typography: Typography.material2021(),
         splashFactory: InkSplash.splashFactory,
         fontFamily: Fonts.primary,

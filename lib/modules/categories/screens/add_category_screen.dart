@@ -16,7 +16,7 @@ class AddCategoryScreen extends StatefulWidget {
   const AddCategoryScreen({super.key});
 
   @override
-  _AddCategoryScreenState createState() => _AddCategoryScreenState();
+  State<AddCategoryScreen> createState() => _AddCategoryScreenState();
 }
 
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
@@ -91,7 +91,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.microtask(() => fetchDetails());
   }
@@ -137,7 +136,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                           controller: _categoryPriceController,
                           labelText: 'Category Design Price',
                           hintText: 'Enter Design Price',
-                          prefixText: AppStrings.naira + "  ",
+                          prefixText: "${AppStrings.naira}  ",
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: false),
                           validator: (value) {
@@ -149,7 +148,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                         ),
                         20.height,
                         Container(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(22),
                               border: Border.all(

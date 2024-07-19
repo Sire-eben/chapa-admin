@@ -118,35 +118,49 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                             children: [
                               Text("S/N", style: AppStyles.urbanist16Md),
                               10.width,
-                              Text("Image", style: AppStyles.urbanist16Md),
-                              20.width,
-                              Expanded(
-                                  child: Text("Name",
+                              Center(
+                                  child: Text("Image",
                                       style: AppStyles.urbanist16Md)),
                               20.width,
                               Expanded(
-                                  child: Text("Sizes",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child:
+                                    Text("Name", style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
-                                  child: Text("Colors",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Sizes",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
-                                  child: Text("Item Prices",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Colors",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
-                                  child: Text("Design Price",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Item Prices",
+                                    style: AppStyles.urbanist16Md),
+                              )),
+                              20.width,
+                              Expanded(
+                                  child: Center(
+                                child: Text("Design Price",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
                                   child: Text("Specifications",
                                       style: AppStyles.urbanist16Md)),
                               20.width,
                               Expanded(
-                                  child: Text("Date Added",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Date Added",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
                                   child: Text("Actions",
@@ -168,6 +182,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                               data: category,
                               index: index,
                               categoryService: categoryService,
+                              categoriesModel: widget.categoriesModel,
                             );
                           },
                         ),

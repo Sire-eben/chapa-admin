@@ -11,7 +11,7 @@ class SnackbarHandler {
     Widget? icon,
   }) {
     return showTopSnackBar(
-      context,
+      Overlay.of(context),
       padding: EdgeInsets.symmetric(vertical: 2, horizontal: 12),
       Material(
         type: MaterialType.transparency,
@@ -52,7 +52,7 @@ class SnackbarHandler {
     Widget? icon,
   }) {
     return showTopSnackBar(
-      context,
+      Overlay.of(context),
       padding: EdgeInsets.symmetric(vertical: 2, horizontal: 12),
       Material(
         type: MaterialType.transparency,

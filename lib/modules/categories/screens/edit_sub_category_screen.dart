@@ -1,6 +1,7 @@
 import 'package:chapa_admin/handlers/snackbar.dart';
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
+import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
 import 'package:chapa_admin/navigation_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
@@ -14,15 +15,22 @@ import 'package:flutter/foundation.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
-class AddSubCategoryScreen extends StatefulWidget {
-  const AddSubCategoryScreen({super.key, required this.categoriesModel});
+class EditSubCategoryScreen extends StatefulWidget {
+  const EditSubCategoryScreen({
+    super.key,
+    required this.categoriesModel,
+    this.isEdit = false,
+    required this.subCategoriesModel,
+  });
   final CategoriesModel categoriesModel;
+  final SubCategoriesModel subCategoriesModel;
+  final bool isEdit;
 
   @override
-  _AddSubCategoryScreenState createState() => _AddSubCategoryScreenState();
+  _EditSubCategoryScreenState createState() => _EditSubCategoryScreenState();
 }
 
-class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
+class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
   final _formKey = GlobalKey<FormState>();
   final _categoryNameController = TextEditingController();
   final _lowPriceController = TextEditingController();
@@ -46,7 +54,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
     }
   }
 
-  Future<void> _addCategory(
+  Future<void> _editCategory(
       BuildContext context, CategoryService categoryService) async {
     if (!_formKey.currentState!.validate()) return;
     if (images.isNotEmpty) {
@@ -60,11 +68,12 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
           imageUrls.add(imageUrl);
         }
 
-        await categoryService.addSubcategory(
+        await categoryService.editSubcategory(
           name: _categoryNameController.text,
           description: _descriptionController.text,
           specifications: _specController.text,
           catId: widget.categoriesModel.id,
+          subcatId: widget.subCategoriesModel.id,
           colors: selectedColors,
           sizes: selectedSizes,
           designPrice: widget.categoriesModel.design_price,
@@ -75,7 +84,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
 
         Future.delayed(Duration.zero, () {
           SnackbarHandler.showSuccessSnackbar(
-              context: context, message: 'Subcategory added successfully!');
+              context: context, message: 'Changes saved successfully!');
           categoryService.getSubcategories(widget.categoriesModel.id);
           locator<NavigationService>().goBack();
         });
@@ -94,10 +103,24 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
 
   List<String> selectedColors = [];
   List<String> selectedSizes = [];
-
+  bool _isAssigning = false;
   fetchDetails() async {
+    setState(() {
+      _isAssigning = true;
+    });
     await service.getColors();
     await service.getSizes();
+    setState(() {
+      _categoryNameController.text = widget.subCategoriesModel.name;
+      _lowPriceController.text = widget.subCategoriesModel.lower_price;
+      _highPriceController.text = widget.subCategoriesModel.higher_price;
+      _descriptionController.text = widget.subCategoriesModel.description;
+      _descriptionController.text = widget.subCategoriesModel.description;
+      _specController.text = widget.subCategoriesModel.specifications;
+      selectedColors.addAll(widget.subCategoriesModel.color);
+      selectedSizes.addAll(widget.subCategoriesModel.size);
+      _isAssigning = false;
+    });
   }
 
   @override
@@ -117,7 +140,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
           maxWidth: context.getWidth(.7),
         ),
         child: Center(
-          child: categoryService.isLoading
+          child: categoryService.isLoading || _isAssigning
               ? const PageLoader()
               : Column(
                   children: [
@@ -342,8 +365,8 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
                     24.height,
                     PrimaryButton(
                       width: context.getWidth(.4),
-                      onPressed: () => _addCategory(context, categoryService),
-                      label: 'Add sub category',
+                      onPressed: () => _editCategory(context, categoryService),
+                      label: 'Save changes',
                     ),
                   ],
                 ),

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:chapa_admin/handlers/base_change_notifier.dart';
+import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
 import 'package:chapa_admin/modules/printing_services/models/prints.dart';
 import 'package:chapa_admin/modules/utilities/models/color_model.dart';
 import 'package:chapa_admin/modules/utilities/models/size_model.dart';
@@ -11,6 +12,30 @@ import 'package:firebase_storage/firebase_storage.dart';
 class CategoryService extends BaseChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  List<SubCategoriesModel> _subCategories = [];
+  List<SubCategoriesModel> get subCategories => _subCategories;
+
+  Future<List<SubCategoriesModel>> getSubcategories(categoryId) async {
+    try {
+      setLoading = true;
+      QuerySnapshot querySnapshot = await _firestore
+          .collection(AppCollections.categories)
+          .doc(categoryId)
+          .collection(AppCollections.subcategories)
+          .get();
+      List<SubCategoriesModel> printingServices = querySnapshot.docs.map((doc) {
+        return SubCategoriesModel.fromDocumentSnapshot(doc);
+      }).toList();
+      _subCategories = printingServices;
+      notifyListeners();
+      handleSuccess();
+      return printingServices;
+    } catch (e) {
+      handleError(message: e.toString());
+      throw Exception('Failed to get suubs: $e');
+    }
+  }
 
   List<PrintingServicesModel> getPrintServices(List<String> ids) {
     try {
@@ -152,6 +177,50 @@ class CategoryService extends BaseChangeNotifier {
     } catch (e) {
       handleError(message: e.toString());
       throw Exception('Failed to add category: $e');
+    }
+  }
+
+  Future<bool> editSubcategory({
+    required String catId,
+    required String subcatId,
+    required String name,
+    required String designPrice,
+    required String lowPrice,
+    required String highPrice,
+    required String description,
+    required String specifications,
+    required List<String> images,
+    required List<String> colors,
+    required List<String> sizes,
+  }) async {
+    try {
+      setLoading = true;
+      // final docId = Utils.generateRandomDocIDs();
+      final now = Utils.getTimestamp();
+      await _firestore
+          .collection(AppCollections.categories)
+          .doc(catId)
+          .collection(AppCollections.subcategories)
+          .doc(subcatId)
+          .update({
+        'name': name,
+        'description': description,
+        'design_price': designPrice,
+        'higher_price': highPrice,
+        'lower_price': lowPrice,
+        'specifications': specifications,
+        'images': images,
+        'color': colors,
+        'size': sizes,
+        'updated': now,
+        'reviews': [],
+      });
+      handleSuccess();
+      return true;
+    } catch (e) {
+      handleError(message: e.toString());
+      // throw Exception('Failed to add category: $e');
+      return false;
     }
   }
 
