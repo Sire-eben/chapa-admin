@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:chapa_admin/handlers/base_change_notifier.dart';
+import 'package:chapa_admin/modules/categories/models/print_service.dart';
 import 'package:chapa_admin/modules/categories/models/quality.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
 import 'package:chapa_admin/modules/printing_qualities/models/prints.dart';
@@ -13,41 +14,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 class CategoryService extends BaseChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
-
-  final List<ItemQuality> _itemQualities = [];
-
-  List<ItemQuality> get itemQualities => _itemQualities;
-
-  void updateItem(int index, ItemQuality item) {
-    _itemQualities[index] = item;
-    notifyListeners();
-  }
-
-  void addMoreQualities({int fill = 2}) {
-    setLoading = true;
-    _itemQualities.addAll(List.filled(fill, ItemQuality(name: '', price: 0.0)));
-
-    notifyListeners();
-    setLoading = false;
-  }
-
-  void removeItem(int index) {
-    _itemQualities.removeAt(index);
-    notifyListeners();
-  }
-
-  List<Map<String, dynamic>> getQualityDetails() {
-    return _itemQualities
-        .where((element) => element.price != 0)
-        .map((order) {
-          return {
-            'name': order.name,
-            'price': order.price.toInt(),
-          };
-        })
-        .where((data) => data["name"] != "" || data["price"] != 0)
-        .toList();
-  }
 
   List<SubCategoriesModel> _subCategories = [];
   List<SubCategoriesModel> get subCategories => _subCategories;
@@ -180,18 +146,18 @@ class CategoryService extends BaseChangeNotifier {
     return false;
   }
 
-  List<Map<String, dynamic>> convertPrintToMap(
-      List<PrintingServicesModel> printServices) {
-    return printServices.map((order) {
-      return {
-        "id": order.id,
-        "name": order.name,
-        "price": order.price,
-        "unit": order.unit,
-        "added": order.added,
-      };
-    }).toList();
-  }
+  // List<Map<String, dynamic>> convertPrintToMap(
+  //     List<PrintingServicesModel> printServices) {
+  //   return printServices.map((order) {
+  //     return {
+  //       "id": order.id,
+  //       "name": order.name,
+  //       "price": order.price,
+  //       "unit": order.unit,
+  //       "added": order.added,
+  //     };
+  //   }).toList();
+  // }
 
   Future<void> addCategory(
       {required String name,
@@ -216,13 +182,67 @@ class CategoryService extends BaseChangeNotifier {
     }
   }
 
+  Future<void> addPrintServiceToItem(
+      {required String catId,
+      required String subcatId,
+      required PrintServiceModel printModel}) async {
+    try {
+      setLoading = true;
+      final now = Utils.getTimestamp();
+      // Get the existing document
+      DocumentSnapshot docSnapshot = await _firestore
+          .collection(AppCollections.categories)
+          .doc(catId)
+          .collection(AppCollections.subcategories)
+          .doc(subcatId)
+          .get();
+
+      // Check if the document exists and get the current qualities
+      List<PrintServiceModel> existingPrintService = [];
+      if (docSnapshot.exists && docSnapshot.data() != null) {
+        Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
+        if (data['printing_services'] != null) {
+          existingPrintService =
+              (data['printing_services'] as List<dynamic>).map((item) {
+            return PrintServiceModel.fromJson(item as Map<String, dynamic>);
+          }).toList();
+        }
+      }
+
+      // Map<String, dynamic> newPrintService = printModel.toMap();
+
+      // Merge the new PrintService with existing PrintService (this example just appends the new ones)
+      List<PrintServiceModel> mergedPrintService = [
+        ...existingPrintService,
+        printModel
+      ];
+
+      // Convert the merged list of ItemQualityModel objects to a list of maps
+      List<Map<String, dynamic>> printsList =
+          mergedPrintService.map((quality) => quality.toMap()).toList();
+
+      // Update the document with the merged list of qualities
+      await _firestore
+          .collection(AppCollections.categories)
+          .doc(catId)
+          .collection(AppCollections.subcategories)
+          .doc(subcatId)
+          .update({
+        'printing_services': printsList,
+        'updated_at': now,
+      });
+      handleSuccess();
+    } catch (e) {
+      handleError(message: e.toString());
+      throw Exception('Failed to add category: $e');
+    }
+  }
+
   Future<bool> editSubcategory({
     required String catId,
     required String subcatId,
     required String name,
     required String designPrice,
-    required String lowPrice,
-    required String highPrice,
     required String description,
     required String specifications,
     required List<String> images,
@@ -242,22 +262,55 @@ class CategoryService extends BaseChangeNotifier {
         'name': name,
         'description': description,
         'design_price': designPrice,
-        'higher_price': highPrice,
-        'lower_price': lowPrice,
         'specifications': specifications,
+        'qualities': getQualityDetails(),
         'images': images,
         'color': colors,
         'size': sizes,
         'updated': now,
-        'reviews': [],
       });
-      handleSuccess();
+      handleSuccess(message: "Changes saved");
       return true;
     } catch (e) {
       handleError(message: e.toString());
       // throw Exception('Failed to add category: $e');
       return false;
     }
+  }
+
+  final List<ItemQuality> _itemQualities = [];
+
+  List<ItemQuality> get itemQualities => _itemQualities;
+
+  void updateItem(int index, ItemQuality item) {
+    _itemQualities[index] = item;
+    notifyListeners();
+  }
+
+  void addMoreQualities({int fill = 2}) {
+    setLoading = true;
+    _itemQualities.addAll(List.filled(fill, ItemQuality(name: '', price: 0.0)));
+
+    notifyListeners();
+    setLoading = false;
+  }
+
+  void removeItem(int index) {
+    _itemQualities.removeAt(index);
+    notifyListeners();
+  }
+
+  List<Map<String, dynamic>> getQualityDetails() {
+    return _itemQualities
+        .where((element) => element.price != 0)
+        .map((order) {
+          return {
+            'name': order.name,
+            'price': order.price.toInt(),
+          };
+        })
+        .where((data) => data["name"] != "" || data["price"] != 0)
+        .toList();
   }
 
   Future<bool> addSubcategory({

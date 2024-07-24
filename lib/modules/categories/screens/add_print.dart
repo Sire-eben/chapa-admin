@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:chapa_admin/handlers/snackbar.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
+import 'package:chapa_admin/modules/categories/models/print_service.dart';
+import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
-import 'package:chapa_admin/modules/categories/widgets/shopping_list_item.dart';
 import 'package:chapa_admin/utils/__utils.dart';
 import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
 import 'package:chapa_admin/widgets/input_fields/text_field.dart';
@@ -14,8 +16,12 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
 class AddPrintService extends StatefulWidget {
-  const AddPrintService({super.key, required this.categoriesModel});
+  const AddPrintService(
+      {super.key,
+      required this.categoriesModel,
+      required this.subCategoriesModel});
   final CategoriesModel categoriesModel;
+  final SubCategoriesModel subCategoriesModel;
 
   @override
   State<AddPrintService> createState() => _AddPrintServiceState();
@@ -125,7 +131,41 @@ class _AddPrintServiceState extends State<AddPrintService> {
                     24.height,
                     PrimaryButton(
                       width: context.getWidth(.4),
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (!_formKey.currentState!.validate()) return;
+                        if (selectedFiles.isEmpty) {
+                          SnackbarHandler.showErrorSnackbar(
+                              context: context, message: "Select images");
+                        } else {
+                          List<String> imageUrls = [];
+                          try {
+                            for (int i = 0; i < images.length; i++) {
+                              String imageUrl = await categoryService
+                                  .uploadImage(images[i], selectedFiles[i]);
+                              imageUrls.add(imageUrl);
+                            }
+
+                            PrintServiceModel printModel = PrintServiceModel(
+                              name: _nameController.text.trim(),
+                              price: _priceController.text.removeTheCommas,
+                              images: imageUrls,
+                            );
+                            await categoryService.addPrintServiceToItem(
+                              catId: widget.categoriesModel.id,
+                              subcatId: widget.subCategoriesModel.id,
+                              printModel: printModel,
+                            );
+                          } catch (e) {
+                            setState(() {});
+                            Future.delayed(Duration.zero, () {
+                              SnackbarHandler.showErrorSnackbar(
+                                context: context,
+                                message: e.toString(),
+                              );
+                            });
+                          }
+                        }
+                      },
                       label: 'Add Print Service',
                     ),
                   ],

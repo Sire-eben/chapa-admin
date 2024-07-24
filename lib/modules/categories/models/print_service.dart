@@ -20,4 +20,12 @@ class PrintServiceModel {
               .toList(),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'price': price,
+      'images': images,
+    };
+  }
 }

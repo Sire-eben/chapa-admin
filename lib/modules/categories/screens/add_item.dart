@@ -94,7 +94,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
   fetchDetails() async {
     await service.getColors();
     await service.getSizes();
-    service.addMoreQualities(fill: 3);
+    service.addMoreQualities(fill: 1);
   }
 
   @override
@@ -190,8 +190,8 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
                                                   AppColors.primary,
                                             ),
                                             onPressed: () {
-                                              categoryService
-                                                  .addMoreQualities();
+                                              categoryService.addMoreQualities(
+                                                  fill: 1);
                                             },
                                             label: Text("Add more"),
                                             icon: Icon(Icons.add),

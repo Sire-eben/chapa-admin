@@ -28,6 +28,7 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
             child: CustomTextField(
               hintText: item.name.isNotEmpty ? item.name.capitalize : "Quality",
               hintStyle: item.name.isNotEmpty ? AppStyles.urbanist14Md : null,
+              validator: Validators.validateString(),
               onChanged: (value) {
                 final receivedValue = value;
                 if (receivedValue != null) {

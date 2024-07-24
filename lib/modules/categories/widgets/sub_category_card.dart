@@ -3,7 +3,6 @@ import 'package:chapa_admin/handlers/alert_dialog_handler.dart';
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
-import 'package:chapa_admin/modules/categories/screens/add_item.dart';
 import 'package:chapa_admin/modules/categories/screens/add_print.dart';
 import 'package:chapa_admin/modules/categories/screens/edit_sub_category_screen.dart';
 import 'package:chapa_admin/modules/categories/screens/view_sub_category_screen.dart';
@@ -152,9 +151,17 @@ class SubCategoryCard extends StatelessWidget {
                           foregroundColor: AppColors.white,
                           padding: EdgeInsets.zero,
                         ),
-                        onPressed: () {},
-                        label: Text("Add more"),
-                        icon: Icon(Icons.add),
+                        onPressed: () {
+                          AlertDialogHandler.showAlertDialog(
+                              context: context,
+                              child: AddPrintService(
+                                  categoriesModel: categoriesModel,
+                                  subCategoriesModel: data),
+                              isLoading: categoryService.isLoading,
+                              heading: "Add Print");
+                        },
+                        label: const Text("Add more"),
+                        icon: const Icon(Icons.add),
                       )
                     ],
                   ),
@@ -173,12 +180,14 @@ class SubCategoryCard extends StatelessWidget {
                 onPressed: () {
                   AlertDialogHandler.showAlertDialog(
                       context: context,
-                      child: AddPrintService(categoriesModel: categoriesModel),
+                      child: AddPrintService(
+                          categoriesModel: categoriesModel,
+                          subCategoriesModel: data),
                       isLoading: categoryService.isLoading,
-                      heading: "Add New Item");
+                      heading: "Add Print");
                 },
-                label: Text("Add Print"),
-                icon: Icon(Icons.add),
+                label: const Text("Add Print"),
+                icon: const Icon(Icons.add),
               ))),
             ],
             Expanded(
@@ -200,15 +209,15 @@ class SubCategoryCard extends StatelessWidget {
                 10.width,
                 InkWell(
                     onTap: () {
-                      // AlertDialogHandler.showAlertDialog(
-                      //     context: context,
-                      //     child: EditSubCategoryScreen(
-                      //       isEdit: true,
-                      //       categoriesModel: categoriesModel,
-                      //       subCategoriesModel: data,
-                      //     ),
-                      //     isLoading: categoryService.isLoading,
-                      //     heading: "Edit ${data.name}");
+                      AlertDialogHandler.showAlertDialog(
+                          context: context,
+                          child: EditSubCategoryScreen(
+                            isEdit: true,
+                            categoriesModel: categoriesModel,
+                            subCategoriesModel: data,
+                          ),
+                          isLoading: categoryService.isLoading,
+                          heading: "Edit ${data.name}");
                     },
                     child: LocalSvgIcon(Assets.icons.linear.edit)),
                 10.width,
