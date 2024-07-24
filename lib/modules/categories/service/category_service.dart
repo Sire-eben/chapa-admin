@@ -238,6 +238,58 @@ class CategoryService extends BaseChangeNotifier {
     }
   }
 
+  Future<void> deletePrintingService(
+      {required String catId,
+      required String subcatId,
+      required PrintServiceModel printModel}) async {
+    try {
+      setLoading = true;
+      final now = Utils.getTimestamp();
+      // Get the existing document
+      DocumentSnapshot docSnapshot = await _firestore
+          .collection(AppCollections.categories)
+          .doc(catId)
+          .collection(AppCollections.subcategories)
+          .doc(subcatId)
+          .get();
+
+      // Check if the document exists and get the current qualities
+      List<PrintServiceModel> existingPrintService = [];
+      if (docSnapshot.exists && docSnapshot.data() != null) {
+        Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
+        if (data['printing_services'] != null) {
+          existingPrintService =
+              (data['printing_services'] as List<dynamic>).map((item) {
+            return PrintServiceModel.fromJson(item as Map<String, dynamic>);
+          }).toList();
+        }
+      }
+
+      // Remove the quality with the specified name
+      existingPrintService
+          .removeWhere((quality) => quality.name == printModel.name);
+
+      // Convert the merged list of ItemQualityModel objects to a list of maps
+      List<Map<String, dynamic>> printsList =
+          existingPrintService.map((quality) => quality.toMap()).toList();
+
+      // Update the document with the merged list of qualities
+      await _firestore
+          .collection(AppCollections.categories)
+          .doc(catId)
+          .collection(AppCollections.subcategories)
+          .doc(subcatId)
+          .update({
+        'printing_services': printsList,
+        'updated_at': now,
+      });
+      handleSuccess();
+    } catch (e) {
+      handleError(message: e.toString());
+      throw Exception('Failed to add category: $e');
+    }
+  }
+
   Future<bool> editSubcategory({
     required String catId,
     required String subcatId,

@@ -5,6 +5,7 @@ import 'package:chapa_admin/modules/categories/models/categories.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
 import 'package:chapa_admin/modules/categories/screens/add_print.dart';
 import 'package:chapa_admin/modules/categories/screens/edit_sub_category_screen.dart';
+import 'package:chapa_admin/modules/categories/screens/show_print.dart';
 import 'package:chapa_admin/modules/categories/screens/view_sub_category_screen.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
 import 'package:chapa_admin/navigation_service.dart';
@@ -145,23 +146,25 @@ class SubCategoryCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      12.height,
                       TextButton.icon(
                         style: TextButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.white,
-                          padding: EdgeInsets.zero,
+                          // padding: EdgeInsets.zero,
                         ),
                         onPressed: () {
                           AlertDialogHandler.showAlertDialog(
                               context: context,
-                              child: AddPrintService(
+                              child: ShowPrintService(
+                                  printServiceModel: data.printing_services,
                                   categoriesModel: categoriesModel,
                                   subCategoriesModel: data),
                               isLoading: categoryService.isLoading,
                               heading: "Add Print");
                         },
-                        label: const Text("Add more"),
-                        icon: const Icon(Icons.add),
+                        label: const Text("View Prints"),
+                        icon: const Icon(Icons.remove_red_eye),
                       )
                     ],
                   ),

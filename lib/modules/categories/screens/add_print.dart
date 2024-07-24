@@ -1,10 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:chapa_admin/handlers/snackbar.dart';
+import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
 import 'package:chapa_admin/modules/categories/models/print_service.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
+import 'package:chapa_admin/navigation_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
 import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
 import 'package:chapa_admin/widgets/input_fields/text_field.dart';
@@ -150,11 +152,19 @@ class _AddPrintServiceState extends State<AddPrintService> {
                               price: _priceController.text.removeTheCommas,
                               images: imageUrls,
                             );
-                            await categoryService.addPrintServiceToItem(
+                            await categoryService
+                                .addPrintServiceToItem(
                               catId: widget.categoriesModel.id,
                               subcatId: widget.subCategoriesModel.id,
                               printModel: printModel,
-                            );
+                            )
+                                .whenComplete(() {
+                              _nameController.clear();
+                              _priceController.clear();
+                              selectedFiles.clear();
+                              images.clear();
+                              locator<NavigationService>().goBack();
+                            });
                           } catch (e) {
                             setState(() {});
                             Future.delayed(Duration.zero, () {
