@@ -1,9 +1,9 @@
 import 'package:chapa_admin/generated/assets.gen.dart';
 import 'package:chapa_admin/handlers/alert_dialog_handler.dart';
 import 'package:chapa_admin/locator.dart';
-import 'package:chapa_admin/modules/printing_services/models/prints.dart';
-import 'package:chapa_admin/modules/printing_services/service/print_service.dart';
-import 'package:chapa_admin/modules/printing_services/widgets/print_card.dart';
+import 'package:chapa_admin/modules/printing_qualities/models/prints.dart';
+import 'package:chapa_admin/modules/printing_qualities/service/print_service.dart';
+import 'package:chapa_admin/modules/printing_qualities/widgets/print_card.dart';
 import 'package:chapa_admin/utils/__utils.dart';
 import 'package:chapa_admin/utils/app_collections.dart';
 import 'package:chapa_admin/widgets/image.dart';
@@ -14,7 +14,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import 'add_service.dart';
+import 'add_quality.dart';
 
 class PrintingServices extends StatefulWidget {
   const PrintingServices({super.key});
@@ -31,7 +31,7 @@ class _PrintingServicesState extends State<PrintingServices> {
 
   Stream<QuerySnapshot> get _database {
     CollectionReference storesRef =
-        _firebaseFirestore.collection(AppCollections.printingServices);
+        _firebaseFirestore.collection(AppCollections.printingQualities);
 
     Query query = storesRef;
 
@@ -60,7 +60,7 @@ class _PrintingServicesState extends State<PrintingServices> {
           );
         },
         label: Text(
-          "Add Service",
+          "Add Quality",
           style: AppStyles.urbanist14Smbd.copyWith(color: Colors.white),
         ),
       ),
@@ -70,7 +70,7 @@ class _PrintingServicesState extends State<PrintingServices> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             30.height,
-            Text('Printing Services',
+            Text('Print Qualities',
                 style: GoogleFonts.urbanist(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -102,7 +102,7 @@ class _PrintingServicesState extends State<PrintingServices> {
                             size: 100,
                             color: AppColors.primary,
                           ),
-                          const Text("No services to show"),
+                          const Text("No data to show"),
                           Gap(context.getHeight(.3)),
                         ],
                       ),

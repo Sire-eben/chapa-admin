@@ -54,6 +54,12 @@ class ParserUtil<T> {
     }
   }
 
+  List<T> parseJsonList2(
+      {required List<dynamic> json,
+      required T Function(Map<String, dynamic>) fromJson}) {
+    return json.map((item) => fromJson(item as Map<String, dynamic>)).toList();
+  }
+
   List<T> parseJsonList({
     required List<dynamic>? json,
     required T Function(DocumentSnapshot json) fromJson,

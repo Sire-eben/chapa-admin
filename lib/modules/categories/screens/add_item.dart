@@ -2,9 +2,9 @@ import 'package:chapa_admin/handlers/snackbar.dart';
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
+import 'package:chapa_admin/modules/categories/widgets/shopping_list_item.dart';
 import 'package:chapa_admin/navigation_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
-import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
 import 'package:chapa_admin/widgets/input_fields/text_field.dart';
 import 'package:chapa_admin/widgets/page_loader.dart';
 import 'package:chapa_admin/widgets/primary_btn.dart';
@@ -25,8 +25,6 @@ class AddSubCategoryScreen extends StatefulWidget {
 class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
   final _formKey = GlobalKey<FormState>();
   final _categoryNameController = TextEditingController();
-  final _lowPriceController = TextEditingController();
-  final _highPriceController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _specController = TextEditingController();
   final service = locator<CategoryService>();
@@ -68,8 +66,6 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
           colors: selectedColors,
           sizes: selectedSizes,
           designPrice: widget.categoriesModel.design_price,
-          lowPrice: _lowPriceController.text.removeTheCommas.toString(),
-          highPrice: _highPriceController.text.removeTheCommas.toString(),
           images: imageUrls,
         );
 
@@ -98,6 +94,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
   fetchDetails() async {
     await service.getColors();
     await service.getSizes();
+    service.addMoreQualities(fill: 3);
   }
 
   @override
@@ -155,37 +152,55 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
                                   },
                                 ),
                                 20.height,
-                                AmountTextField(
-                                  controller: _lowPriceController,
-                                  labelText: 'Low quality price',
-                                  hintText: 'Enter Price',
-                                  prefixText: AppStrings.naira + "  ",
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          decimal: false),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter a price';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                20.height,
-                                AmountTextField(
-                                  controller: _highPriceController,
-                                  labelText: 'High quality price',
-                                  hintText: 'Enter Price',
-                                  prefixText: AppStrings.naira + "  ",
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          decimal: false),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter a price';
-                                    }
-                                    return null;
-                                  },
-                                ),
+                                IntrinsicHeight(
+                                  child: Container(
+                                    height: 400,
+                                    width: 500,
+                                    padding: EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(22),
+                                        border: Border.all(
+                                          color: AppColors.primary,
+                                        )),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "Add Qualities for this item",
+                                            style: AppStyles.urbanist13Md,
+                                          ),
+                                          10.height,
+                                          ListView.builder(
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.zero,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemCount: categoryService
+                                                .itemQualities.length,
+                                            itemBuilder: (context, index) {
+                                              return ShoppingListItem(
+                                                index: index,
+                                              );
+                                            },
+                                          ),
+                                          10.height,
+                                          TextButton.icon(
+                                            style: TextButton.styleFrom(
+                                              foregroundColor:
+                                                  AppColors.primary,
+                                            ),
+                                            onPressed: () {
+                                              categoryService
+                                                  .addMoreQualities();
+                                            },
+                                            label: Text("Add more"),
+                                            icon: Icon(Icons.add),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),

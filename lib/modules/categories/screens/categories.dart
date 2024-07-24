@@ -140,10 +140,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                       style: AppStyles.urbanist16Md)),
                               30.width,
                               Expanded(
-                                  child: Text("Printing Services",
-                                      style: AppStyles.urbanist16Md)),
-                              30.width,
-                              Expanded(
                                   child: Text("Date Added",
                                       style: AppStyles.urbanist16Md)),
                               20.width,

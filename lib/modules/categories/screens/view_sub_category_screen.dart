@@ -69,37 +69,37 @@ class _ViewSubCategoryScreenState extends State<ViewSubCategoryScreen> {
                                 },
                               ),
                               20.height,
-                              AmountTextField(
-                                enabled: false,
-                                labelText: 'Low quality price',
-                                hintText: Utils.formatAmount(data.lower_price),
-                                prefixText: AppStrings.naira + "  ",
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        decimal: false),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a price';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              20.height,
-                              AmountTextField(
-                                enabled: false,
-                                labelText: 'High quality price',
-                                hintText: Utils.formatAmount(data.higher_price),
-                                prefixText: AppStrings.naira + "  ",
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        decimal: false),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a price';
-                                  }
-                                  return null;
-                                },
-                              ),
+                              // AmountTextField(
+                              //   enabled: false,
+                              //   labelText: 'Low quality price',
+                              //   hintText: Utils.formatAmount(data.lower_price),
+                              //   prefixText: AppStrings.naira + "  ",
+                              //   keyboardType:
+                              //       const TextInputType.numberWithOptions(
+                              //           decimal: false),
+                              //   validator: (value) {
+                              //     if (value == null || value.isEmpty) {
+                              //       return 'Please enter a price';
+                              //     }
+                              //     return null;
+                              //   },
+                              // ),
+                              // 20.height,
+                              // AmountTextField(
+                              //   enabled: false,
+                              //   labelText: 'High quality price',
+                              //   hintText: Utils.formatAmount(data.higher_price),
+                              //   prefixText: AppStrings.naira + "  ",
+                              //   keyboardType:
+                              //       const TextInputType.numberWithOptions(
+                              //           decimal: false),
+                              //   validator: (value) {
+                              //     if (value == null || value.isEmpty) {
+                              //       return 'Please enter a price';
+                              //     }
+                              //     return null;
+                              //   },
+                              // ),
                             ],
                           ),
                         ),

@@ -45,9 +45,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
 
   Future<void> _addCategory(
       BuildContext context, CategoryService categoryService) async {
-    if (_formKey.currentState!.validate() &&
-        image != null &&
-        selectedPrints.isNotEmpty) {
+    if (_formKey.currentState!.validate() && image != null) {
       setState(() {});
 
       try {
@@ -55,7 +53,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             await categoryService.uploadImage(image!, selectedFile);
         await categoryService.addCategory(
             name: _categoryNameController.text,
-            printServices: selectedPrints,
             designPrice:
                 _categoryPriceController.text.removeTheCommas.toString(),
             imageUrl: imageUrl);
@@ -65,7 +62,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             _categoryNameController.clear();
             _categoryPriceController.clear();
             image = null;
-            selectedPrints.clear();
+            // selectedPrints.clear();
           });
           SnackbarHandler.showSuccessSnackbar(
               context: context, message: 'Category added successfully!');
@@ -84,16 +81,16 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     }
   }
 
-  List<String> selectedPrints = [];
+  // List<String> selectedPrints = [];
 
-  final service = locator<CategoryService>();
-  fetchDetails() async => await service.getPrintingServices();
+  // final service = locator<CategoryService>();
+  // fetchDetails() async => await service.getPrintingServices();
 
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() => fetchDetails());
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Future.microtask(() => fetchDetails());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -146,70 +143,70 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                             return null;
                           },
                         ),
-                        20.height,
-                        Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(22),
-                              border: Border.all(
-                                color: AppColors.primary,
-                                width: 0.5,
-                              )),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Select Printing Services:",
-                                style: AppStyles.urbanist14Md.copyWith(
-                                    color: AppColors.appBlack, fontSize: 13),
-                              ),
-                              10.height,
-                              Wrap(
-                                  alignment: WrapAlignment.start,
-                                  spacing: 12,
-                                  runSpacing:
-                                      12, // Vertical spacing between rows
-                                  children: List.generate(
-                                      categoryService.printingServices.length,
-                                      (index) {
-                                    final print =
-                                        categoryService.printingServices[index];
-                                    bool isSelected =
-                                        selectedPrints.contains(print.id);
-                                    return GestureDetector(
-                                      onTap: () => setState(() {
-                                        if (!isSelected) {
-                                          selectedPrints.add(print.id);
-                                        } else {
-                                          selectedPrints.remove(print.id);
-                                        }
-                                      }),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 12),
-                                        decoration: BoxDecoration(
-                                            color: isSelected
-                                                ? AppColors.primary
-                                                : AppColors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            border: Border.all(
-                                                color: AppColors.secondary)),
-                                        child: Text(
-                                          print.name,
-                                          style: AppStyles.urbanistGeneral(
-                                            13,
-                                            FontWeight.w700,
-                                            color: isSelected
-                                                ? AppColors.white
-                                                : AppColors.primary,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  })),
-                            ],
-                          ),
-                        ),
+                        // 20.height,
+                        // Container(
+                        //   padding: const EdgeInsets.all(20),
+                        //   decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(22),
+                        //       border: Border.all(
+                        //         color: AppColors.primary,
+                        //         width: 0.5,
+                        //       )),
+                        //   child: Column(
+                        //     children: [
+                        //       Text(
+                        //         "Select Printing Services:",
+                        //         style: AppStyles.urbanist14Md.copyWith(
+                        //             color: AppColors.appBlack, fontSize: 13),
+                        //       ),
+                        //       10.height,
+                        //       Wrap(
+                        //           alignment: WrapAlignment.start,
+                        //           spacing: 12,
+                        //           runSpacing:
+                        //               12, // Vertical spacing between rows
+                        //           children: List.generate(
+                        //               categoryService.printingServices.length,
+                        //               (index) {
+                        //             final print =
+                        //                 categoryService.printingServices[index];
+                        //             bool isSelected =
+                        //                 selectedPrints.contains(print.id);
+                        //             return GestureDetector(
+                        //               onTap: () => setState(() {
+                        //                 if (!isSelected) {
+                        //                   selectedPrints.add(print.id);
+                        //                 } else {
+                        //                   selectedPrints.remove(print.id);
+                        //                 }
+                        //               }),
+                        //               child: Container(
+                        //                 padding: const EdgeInsets.symmetric(
+                        //                     vertical: 8, horizontal: 12),
+                        //                 decoration: BoxDecoration(
+                        //                     color: isSelected
+                        //                         ? AppColors.primary
+                        //                         : AppColors.white,
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(8),
+                        //                     border: Border.all(
+                        //                         color: AppColors.secondary)),
+                        //                 child: Text(
+                        //                   print.name,
+                        //                   style: AppStyles.urbanistGeneral(
+                        //                     13,
+                        //                     FontWeight.w700,
+                        //                     color: isSelected
+                        //                         ? AppColors.white
+                        //                         : AppColors.primary,
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //             );
+                        //           })),
+                        //     ],
+                        //   ),
+                        // ),
                         20.height,
                         if (image != null)
                           SizedBox(

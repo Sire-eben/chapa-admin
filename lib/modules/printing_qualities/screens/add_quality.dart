@@ -1,7 +1,7 @@
 import 'package:chapa_admin/handlers/snackbar.dart';
 import 'package:chapa_admin/locator.dart';
-import 'package:chapa_admin/modules/printing_services/models/prints.dart';
-import 'package:chapa_admin/modules/printing_services/service/print_service.dart';
+import 'package:chapa_admin/modules/printing_qualities/models/prints.dart';
+import 'package:chapa_admin/modules/printing_qualities/service/print_service.dart';
 import 'package:chapa_admin/navigation_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
 import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
@@ -29,7 +29,7 @@ class _AddColorDialogState extends State<AddPrintingServiceDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
-  final _unitController = TextEditingController();
+  // final _unitController = TextEditingController();
 
   PrintingServicesModel? get model => widget.printingServicesModel;
 
@@ -38,7 +38,7 @@ class _AddColorDialogState extends State<AddPrintingServiceDialog> {
       setState(() {
         _nameController.text = model?.name ?? "";
         _priceController.text = model?.price ?? "";
-        _unitController.text = model?.unit ?? "";
+        // _unitController.text = model?.unit ?? "";
       });
     }
   }
@@ -75,7 +75,7 @@ class _AddColorDialogState extends State<AddPrintingServiceDialog> {
                       children: [
                         CustomTextField(
                           controller: _nameController,
-                          labelText: 'Service Name',
+                          labelText: 'Enter Name',
                           hintText: 'Enter  Name',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -87,8 +87,8 @@ class _AddColorDialogState extends State<AddPrintingServiceDialog> {
                         20.height,
                         AmountTextField(
                           controller: _priceController,
-                          labelText: 'Printing Service Price',
-                          hintText: 'Enter Service Price',
+                          labelText: 'Price',
+                          hintText: 'Enter Price',
                           prefixText: AppStrings.naira + "  ",
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: false),
@@ -100,34 +100,34 @@ class _AddColorDialogState extends State<AddPrintingServiceDialog> {
                           },
                         ),
                         20.height,
-                        CustomTextField(
-                          controller: _unitController,
-                          labelText: 'Unit (E.g; Yard, Meter, etc)',
-                          hintText: 'Enter  unit',
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a unit';
-                            }
-                            return null;
-                          },
-                        ),
-                        20.height,
+                        // CustomTextField(
+                        //   controller: _unitController,
+                        //   labelText: 'Unit (E.g; Yard, Meter, etc)',
+                        //   hintText: 'Enter  unit',
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please enter a unit';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
+                        // 20.height,
                         PrimaryButton(
                           onPressed: () async {
                             if (!_formKey.currentState!.validate()) return;
                             if (!widget.isEditing) {
                               await utilitiesService
                                   .addPrintService(
-                                      name: _nameController.text.trim(),
-                                      price: _priceController
-                                          .text.removeTheCommas
-                                          .toString(),
-                                      unit: _unitController.text)
+                                name: _nameController.text.trim(),
+                                price: _priceController.text.removeTheCommas
+                                    .toString(),
+                                // unit: _unitController.text,
+                              )
                                   .then((res) {
                                 if (res) {
                                   _nameController.clear();
                                   _priceController.clear();
-                                  _unitController.clear();
+                                  // _unitController.clear();
                                   SnackbarHandler.showSuccessSnackbar(
                                       context: context,
                                       message: utilitiesService.message);
@@ -141,18 +141,17 @@ class _AddColorDialogState extends State<AddPrintingServiceDialog> {
                             } else {
                               await utilitiesService
                                   .editPrintService(
-                                      id: widget.printingServicesModel?.id ??
-                                          "",
-                                      name: _nameController.text.trim(),
-                                      price: _priceController
-                                          .text.removeTheCommas
-                                          .toString(),
-                                      unit: _unitController.text)
+                                id: widget.printingServicesModel?.id ?? "",
+                                name: _nameController.text.trim(),
+                                price: _priceController.text.removeTheCommas
+                                    .toString(),
+                                // unit: _unitController.text,
+                              )
                                   .then((res) {
                                 if (res) {
                                   _nameController.clear();
                                   _priceController.clear();
-                                  _unitController.clear();
+                                  // _unitController.clear();
                                   SnackbarHandler.showSuccessSnackbar(
                                       context: context,
                                       message: utilitiesService.message);

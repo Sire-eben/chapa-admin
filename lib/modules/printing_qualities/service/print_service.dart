@@ -10,18 +10,18 @@ class PrintingService extends BaseChangeNotifier {
     required String id,
     required String name,
     required String price,
-    required String unit,
+    // required String unit,
   }) async {
     try {
       setLoading = true;
       final now = Utils.getTimestamp();
       await _firestore
-          .collection(AppCollections.printingServices)
+          .collection(AppCollections.printingQualities)
           .doc(id)
           .update({
         'name': name,
         'price': price,
-        'unit': unit,
+        // 'unit': unit,
         'updated_at': now,
       });
       handleSuccess();
@@ -36,7 +36,7 @@ class PrintingService extends BaseChangeNotifier {
     try {
       setLoading = true;
       await _firestore
-          .collection(AppCollections.printingServices)
+          .collection(AppCollections.printingQualities)
           .doc(id)
           .delete();
       handleSuccess(message: "Deleted");
@@ -50,15 +50,15 @@ class PrintingService extends BaseChangeNotifier {
   Future<bool> addPrintService({
     required String name,
     required String price,
-    required String unit,
+    // required String unit,
   }) async {
     try {
       setLoading = true;
       final now = Utils.getTimestamp();
-      await _firestore.collection(AppCollections.printingServices).doc().set({
+      await _firestore.collection(AppCollections.printingQualities).doc().set({
         'name': name,
         'price': price,
-        'unit': unit,
+        // 'unit': unit,
         'added': now,
       });
       handleSuccess();

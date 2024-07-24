@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   SideMenuItem(
-                    title: 'Printing Services',
+                    title: 'Print Qualities',
                     iconWidget: LocalSvgIcon(
                       Assets.icons.bulk.printer,
                       color: AppColors.primary,

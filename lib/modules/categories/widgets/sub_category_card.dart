@@ -3,7 +3,8 @@ import 'package:chapa_admin/handlers/alert_dialog_handler.dart';
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
-import 'package:chapa_admin/modules/categories/screens/add_sub_category_screen.dart';
+import 'package:chapa_admin/modules/categories/screens/add_item.dart';
+import 'package:chapa_admin/modules/categories/screens/add_print.dart';
 import 'package:chapa_admin/modules/categories/screens/edit_sub_category_screen.dart';
 import 'package:chapa_admin/modules/categories/screens/view_sub_category_screen.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
@@ -71,7 +72,7 @@ class SubCategoryCard extends StatelessWidget {
               )),
             ] else ...[
               20.width,
-              Expanded(child: Text("")),
+              const Expanded(child: Text("No Colors")),
             ],
             if (data.color.isNotEmpty) ...[
               20.width,
@@ -84,35 +85,102 @@ class SubCategoryCard extends StatelessWidget {
               )),
             ] else ...[
               20.width,
-              Expanded(child: Text("")),
+              const Expanded(child: Text("No Sizes")),
             ],
             20.width,
             Expanded(
               child: Center(
-                child: Column(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                        "Fair Quality - ${Utils.formatAmount(data.lower_price)}"),
+                      data.qualities
+                          .map((size) => size.name.capitalize)
+                          .join('\n'),
+                    ),
+                    const Text(" - "),
                     Text(
-                        "High Quality - ${Utils.formatAmount(data.higher_price)}"),
+                      data.qualities
+                          .map((size) =>
+                              Utils.formatAmount(size.price.toString()))
+                          .join('\n'),
+                    ),
                   ],
                 ),
               ),
             ),
+            // 20.width,
+            // Expanded(
+            //     child: Center(
+            //         child: Center(
+            //             child: Text(Utils.formatAmount(data.design_price))))),
+            // 20.width,
+            // Expanded(
+            //     child: Center(
+            //         child: Text(
+            //   data.specifications,
+            //   textAlign: TextAlign.center,
+            // ))),
             20.width,
-            Expanded(
+            if (data.printing_services.isNotEmpty) ...[
+              20.width,
+              Expanded(
                 child: Center(
-                    child: Center(
-                        child: Text(Utils.formatAmount(data.design_price))))),
-            20.width,
-            Expanded(
-                child: Center(
-                    child: Text(
-              data.specifications,
-              textAlign: TextAlign.center,
-            ))),
-            20.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            data.printing_services
+                                .map((size) => size.name.capitalize)
+                                .join('\n'),
+                          ),
+                          const Text(" - "),
+                          Text(
+                            data.printing_services
+                                .map((size) =>
+                                    Utils.formatAmount(size.price.toString()))
+                                .join('\n'),
+                          ),
+                        ],
+                      ),
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.white,
+                          padding: EdgeInsets.zero,
+                        ),
+                        onPressed: () {},
+                        label: Text("Add more"),
+                        icon: Icon(Icons.add),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ] else ...[
+              20.width,
+              Expanded(
+                  child: Center(
+                      child: TextButton.icon(
+                style: TextButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.white,
+                  // padding: EdgeInsets.zero,
+                ),
+                onPressed: () {
+                  AlertDialogHandler.showAlertDialog(
+                      context: context,
+                      child: AddPrintService(categoriesModel: categoriesModel),
+                      isLoading: categoryService.isLoading,
+                      heading: "Add New Item");
+                },
+                label: Text("Add Print"),
+                icon: Icon(Icons.add),
+              ))),
+            ],
             Expanded(
                 child: Center(child: Text(Utils().formatDate(data.added)))),
             20.width,
@@ -132,15 +200,15 @@ class SubCategoryCard extends StatelessWidget {
                 10.width,
                 InkWell(
                     onTap: () {
-                      AlertDialogHandler.showAlertDialog(
-                          context: context,
-                          child: EditSubCategoryScreen(
-                            isEdit: true,
-                            categoriesModel: categoriesModel,
-                            subCategoriesModel: data,
-                          ),
-                          isLoading: categoryService.isLoading,
-                          heading: "Edit ${data.name}");
+                      // AlertDialogHandler.showAlertDialog(
+                      //     context: context,
+                      //     child: EditSubCategoryScreen(
+                      //       isEdit: true,
+                      //       categoriesModel: categoriesModel,
+                      //       subCategoriesModel: data,
+                      //     ),
+                      //     isLoading: categoryService.isLoading,
+                      //     heading: "Edit ${data.name}");
                     },
                     child: LocalSvgIcon(Assets.icons.linear.edit)),
                 10.width,

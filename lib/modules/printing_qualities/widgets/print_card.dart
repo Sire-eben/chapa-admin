@@ -1,9 +1,9 @@
 import 'package:chapa_admin/generated/assets.gen.dart';
 import 'package:chapa_admin/handlers/alert_dialog_handler.dart';
 import 'package:chapa_admin/locator.dart';
-import 'package:chapa_admin/modules/printing_services/models/prints.dart';
-import 'package:chapa_admin/modules/printing_services/screens/add_service.dart';
-import 'package:chapa_admin/modules/printing_services/service/print_service.dart';
+import 'package:chapa_admin/modules/printing_qualities/models/prints.dart';
+import 'package:chapa_admin/modules/printing_qualities/screens/add_quality.dart';
+import 'package:chapa_admin/modules/printing_qualities/service/print_service.dart';
 import 'package:chapa_admin/navigation_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
 import 'package:chapa_admin/widgets/image.dart';

@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 import 'package:chapa_admin/handlers/base_change_notifier.dart';
+import 'package:chapa_admin/modules/categories/models/quality.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
-import 'package:chapa_admin/modules/printing_services/models/prints.dart';
+import 'package:chapa_admin/modules/printing_qualities/models/prints.dart';
 import 'package:chapa_admin/modules/utilities/models/color_model.dart';
 import 'package:chapa_admin/modules/utilities/models/size_model.dart';
 import 'package:chapa_admin/utils/app_collections.dart';
@@ -12,6 +13,41 @@ import 'package:firebase_storage/firebase_storage.dart';
 class CategoryService extends BaseChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  final List<ItemQuality> _itemQualities = [];
+
+  List<ItemQuality> get itemQualities => _itemQualities;
+
+  void updateItem(int index, ItemQuality item) {
+    _itemQualities[index] = item;
+    notifyListeners();
+  }
+
+  void addMoreQualities({int fill = 2}) {
+    setLoading = true;
+    _itemQualities.addAll(List.filled(fill, ItemQuality(name: '', price: 0.0)));
+
+    notifyListeners();
+    setLoading = false;
+  }
+
+  void removeItem(int index) {
+    _itemQualities.removeAt(index);
+    notifyListeners();
+  }
+
+  List<Map<String, dynamic>> getQualityDetails() {
+    return _itemQualities
+        .where((element) => element.price != 0)
+        .map((order) {
+          return {
+            'name': order.name,
+            'price': order.price.toInt(),
+          };
+        })
+        .where((data) => data["name"] != "" || data["price"] != 0)
+        .toList();
+  }
 
   List<SubCategoriesModel> _subCategories = [];
   List<SubCategoriesModel> get subCategories => _subCategories;
@@ -55,7 +91,7 @@ class CategoryService extends BaseChangeNotifier {
   Future<List<PrintingServicesModel>> getPrintingServices() async {
     try {
       QuerySnapshot querySnapshot =
-          await _firestore.collection(AppCollections.printingServices).get();
+          await _firestore.collection(AppCollections.printingQualities).get();
       List<PrintingServicesModel> printingServices =
           querySnapshot.docs.map((doc) {
         return PrintingServicesModel.fromDocumentSnapshot(doc);
@@ -64,7 +100,7 @@ class CategoryService extends BaseChangeNotifier {
       notifyListeners();
       return printingServices;
     } catch (e) {
-      throw Exception('Failed to get colors: $e');
+      throw Exception('Failed to get printingQualities: $e');
     }
   }
 
@@ -160,7 +196,7 @@ class CategoryService extends BaseChangeNotifier {
   Future<void> addCategory(
       {required String name,
       required String designPrice,
-      required List<String> printServices,
+      // required List<String> printServices,
       required String imageUrl}) async {
     try {
       setLoading = true;
@@ -170,7 +206,7 @@ class CategoryService extends BaseChangeNotifier {
         'name': name,
         'url': imageUrl,
         'design_price': designPrice,
-        'printing_services': printServices,
+        // 'printing_services': printServices,
         'added': now,
       });
       handleSuccess();
@@ -228,8 +264,6 @@ class CategoryService extends BaseChangeNotifier {
     required String catId,
     required String name,
     required String designPrice,
-    required String lowPrice,
-    required String highPrice,
     required String description,
     required String specifications,
     required List<String> images,
@@ -251,14 +285,12 @@ class CategoryService extends BaseChangeNotifier {
         'name': name,
         'description': description,
         'design_price': designPrice,
-        'higher_price': highPrice,
-        'lower_price': lowPrice,
+        'qualities': getQualityDetails(),
         'specifications': specifications,
         'images': images,
         'color': colors,
         'size': sizes,
         'added': now,
-        'reviews': [],
       });
       handleSuccess();
       return true;
