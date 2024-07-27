@@ -1,6 +1,8 @@
+import 'package:chapa_admin/generated/assets.gen.dart';
 import 'package:chapa_admin/modules/categories/models/quality.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
+import 'package:chapa_admin/widgets/image.dart';
 import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
 import 'package:chapa_admin/widgets/input_fields/text_field.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +73,13 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
               },
             ),
           ),
+          const Gap(10),
+          InkWell(
+              onTap: () => notifier.removeItem(widget.index),
+              child: LocalSvgIcon(
+                Assets.icons.linear.trash,
+                color: Colors.red,
+              ))
         ],
       );
     });

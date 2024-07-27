@@ -182,6 +182,30 @@ class CategoryService extends BaseChangeNotifier {
     }
   }
 
+  Future<void> editCategory({
+    required String name,
+    required String catId,
+    required String designPrice,
+    required String imageUrl,
+  }) async {
+    try {
+      setLoading = true;
+      // final services = convertPrintToMap(printServices);
+      final now = Utils.getTimestamp();
+      await _firestore.collection(AppCollections.categories).doc(catId).update({
+        'name': name,
+        'url': imageUrl,
+        'design_price': designPrice,
+        // 'printing_services': printServices,
+        'updated': now,
+      });
+      handleSuccess();
+    } catch (e) {
+      handleError(message: e.toString());
+      throw Exception('Failed to update category: $e');
+    }
+  }
+
   Future<void> addPrintServiceToItem(
       {required String catId,
       required String subcatId,
@@ -395,6 +419,8 @@ class CategoryService extends BaseChangeNotifier {
         'images': images,
         'color': colors,
         'size': sizes,
+        'reviews': null,
+        'printing_services': null,
         'added': now,
       });
       handleSuccess();

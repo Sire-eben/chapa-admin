@@ -1,13 +1,10 @@
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
-import 'package:chapa_admin/modules/categories/widgets/shopping_list_item.dart';
 import 'package:chapa_admin/modules/categories/widgets/shopping_list_item_for_view.dart';
 import 'package:chapa_admin/navigation_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
-import 'package:chapa_admin/utils/app_themes.dart';
 import 'package:chapa_admin/widgets/cached_image_widget.dart';
-import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
 import 'package:chapa_admin/widgets/input_fields/text_field.dart';
 import 'package:chapa_admin/widgets/page_loader.dart';
 import 'package:chapa_admin/widgets/primary_btn.dart';

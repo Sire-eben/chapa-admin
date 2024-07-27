@@ -2,6 +2,7 @@ import 'package:chapa_admin/generated/assets.gen.dart';
 import 'package:chapa_admin/handlers/alert_dialog_handler.dart';
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
+import 'package:chapa_admin/modules/categories/screens/edit_category.dart';
 import 'package:chapa_admin/modules/categories/screens/sub_categories.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
 import 'package:chapa_admin/navigation_service.dart';
@@ -76,7 +77,15 @@ class CategoryCard extends StatelessWidget {
                 children: [
                   LocalSvgIcon(Assets.icons.linear.eye),
                   10.width,
-                  LocalSvgIcon(Assets.icons.linear.edit),
+                  InkWell(
+                      onTap: () {
+                        AlertDialogHandler.showAlertDialog(
+                            context: context,
+                            child: EditCategory(categoriesModel: data),
+                            isLoading: categoryService.isLoading,
+                            heading: "Edit ${data.name}");
+                      },
+                      child: LocalSvgIcon(Assets.icons.linear.edit)),
                   10.width,
                   InkWell(
                       onTap: () {

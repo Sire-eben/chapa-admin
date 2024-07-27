@@ -73,6 +73,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
           SnackbarHandler.showSuccessSnackbar(
               context: context, message: 'Subcategory added successfully!');
           categoryService.getSubcategories(widget.categoriesModel.id);
+          categoryService.itemQualities.clear();
           locator<NavigationService>().goBack();
         });
       } catch (e) {
@@ -94,6 +95,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
   fetchDetails() async {
     await service.getColors();
     await service.getSizes();
+    service.itemQualities.clear();
     service.addMoreQualities(fill: 1);
   }
 
@@ -358,7 +360,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
                     PrimaryButton(
                       width: context.getWidth(.4),
                       onPressed: () => _addCategory(context, categoryService),
-                      label: 'Add sub category',
+                      label: 'Add Item',
                     ),
                   ],
                 ),

@@ -106,6 +106,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
     });
     await service.getColors();
     await service.getSizes();
+    service.itemQualities.clear();
     service.addMoreQualities(fill: 1);
     setState(() {
       _categoryNameController.text = widget.subCategoriesModel.name;
