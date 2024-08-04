@@ -119,53 +119,55 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   } else {
                     final List<QueryDocumentSnapshot> documents =
                         snapshot.data!.docs;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ConstrainedBox(
-                          constraints:
-                              BoxConstraints(minWidth: context.getWidth(.4)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Image", style: AppStyles.urbanist16Md),
-                              Gap(context.getWidth(.1)),
-                              Expanded(
-                                  child: Text("Category Name",
-                                      style: AppStyles.urbanist16Md)),
-                              30.width,
-                              Expanded(
-                                  child: Text(
-                                      "Design Price(${AppStrings.naira})",
-                                      style: AppStyles.urbanist16Md)),
-                              30.width,
-                              Expanded(
-                                  child: Text("Date Added",
-                                      style: AppStyles.urbanist16Md)),
-                              20.width,
-                              Expanded(
-                                  child: Text("Actions",
-                                      style: AppStyles.urbanist16Md)),
-                            ],
+                    return SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ConstrainedBox(
+                            constraints:
+                                BoxConstraints(minWidth: context.getWidth(.4)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Image", style: AppStyles.urbanist16Md),
+                                Gap(context.getWidth(.1)),
+                                Expanded(
+                                    child: Text("Category Name",
+                                        style: AppStyles.urbanist16Md)),
+                                30.width,
+                                Expanded(
+                                    child: Text(
+                                        "Design Price(${AppStrings.naira})",
+                                        style: AppStyles.urbanist16Md)),
+                                30.width,
+                                Expanded(
+                                    child: Text("Date Added",
+                                        style: AppStyles.urbanist16Md)),
+                                20.width,
+                                Expanded(
+                                    child: Text("Actions",
+                                        style: AppStyles.urbanist16Md)),
+                              ],
+                            ),
                           ),
-                        ),
-                        const Divider(),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: documents.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.zero,
-                          itemBuilder: (_, index) {
-                            final data = documents[index];
-                            final category =
-                                CategoriesModel.fromDocumentSnapshot(data);
-                            return CategoryCard(
-                              data: category,
-                              categoryService: locator<CategoryService>(),
-                            );
-                          },
-                        ),
-                      ],
+                          const Divider(),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: documents.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (_, index) {
+                              final data = documents[index];
+                              final category =
+                                  CategoriesModel.fromDocumentSnapshot(data);
+                              return CategoryCard(
+                                data: category,
+                                categoryService: locator<CategoryService>(),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     );
                   }
                 },
