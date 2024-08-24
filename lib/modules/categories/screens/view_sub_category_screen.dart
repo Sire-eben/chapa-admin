@@ -148,6 +148,18 @@ class _ViewSubCategoryScreenState extends State<ViewSubCategoryScreen> {
                                   return null;
                                 },
                               ),
+                              20.height,
+                              CustomTextField(
+                                enabled: false,
+                                labelText: 'Min Order',
+                                hintText: data.min_amount,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a category name';
+                                  }
+                                  return null;
+                                },
+                              ),
                               12.height,
                               const Text("Select Colors"),
                               12.height,

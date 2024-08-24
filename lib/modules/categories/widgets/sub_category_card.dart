@@ -3,9 +3,7 @@ import 'package:chapa_admin/handlers/alert_dialog_handler.dart';
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
-import 'package:chapa_admin/modules/categories/screens/add_print.dart';
 import 'package:chapa_admin/modules/categories/screens/edit_sub_category_screen.dart';
-import 'package:chapa_admin/modules/categories/screens/show_print.dart';
 import 'package:chapa_admin/modules/categories/screens/view_sub_category_screen.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
 import 'package:chapa_admin/navigation_service.dart';
@@ -60,7 +58,9 @@ class SubCategoryCard extends StatelessWidget {
               borderRadius: 1,
             ),
             Gap(context.getWidth(.015)),
-            Expanded(child: Text(data.name, style: AppStyles.urbanist14Md)),
+            Expanded(
+                child: Center(
+                    child: Text(data.name, style: AppStyles.urbanist14Md))),
             if (data.size.isNotEmpty) ...[
               20.width,
               Expanded(
@@ -92,6 +92,7 @@ class SubCategoryCard extends StatelessWidget {
               child: Center(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       data.qualities
@@ -109,90 +110,12 @@ class SubCategoryCard extends StatelessWidget {
                 ),
               ),
             ),
-            // 20.width,
-            // Expanded(
-            //     child: Center(
-            //         child: Center(
-            //             child: Text(Utils.formatAmount(data.design_price))))),
-            // 20.width,
-            // Expanded(
-            //     child: Center(
-            //         child: Text(
-            //   data.specifications,
-            //   textAlign: TextAlign.center,
-            // ))),
             20.width,
-            if (data.printing_services.isNotEmpty) ...[
-              20.width,
-              Expanded(
+            Expanded(
                 child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            data.printing_services
-                                .map((size) => size.name.capitalize)
-                                .join('\n'),
-                          ),
-                          const Text(" - "),
-                          Text(
-                            data.printing_services
-                                .map((size) =>
-                                    Utils.formatAmount(size.price.toString()))
-                                .join('\n'),
-                          ),
-                        ],
-                      ),
-                      12.height,
-                      TextButton.icon(
-                        style: TextButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.white,
-                          // padding: EdgeInsets.zero,
-                        ),
-                        onPressed: () {
-                          AlertDialogHandler.showAlertDialog(
-                              context: context,
-                              child: ShowPrintService(
-                                  printServiceModel: data.printing_services,
-                                  categoriesModel: categoriesModel,
-                                  subCategoriesModel: data),
-                              isLoading: categoryService.isLoading,
-                              heading: "Add Print");
-                        },
-                        label: const Text("View Prints"),
-                        icon: const Icon(Icons.remove_red_eye),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ] else ...[
-              20.width,
-              Expanded(
-                  child: Center(
-                      child: TextButton.icon(
-                style: TextButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.white,
-                  // padding: EdgeInsets.zero,
-                ),
-                onPressed: () {
-                  AlertDialogHandler.showAlertDialog(
-                      context: context,
-                      child: AddPrintService(
-                          categoriesModel: categoriesModel,
-                          subCategoriesModel: data),
-                      isLoading: categoryService.isLoading,
-                      heading: "Add Print");
-                },
-                label: const Text("Add Print"),
-                icon: const Icon(Icons.add),
-              ))),
-            ],
+                    child:
+                        Text(data.min_amount, style: AppStyles.urbanist14Md))),
+            20.width,
             Expanded(
                 child: Center(child: Text(Utils().formatDate(data.added)))),
             20.width,

@@ -5,6 +5,7 @@ import 'package:chapa_admin/modules/categories/service/category_service.dart';
 import 'package:chapa_admin/modules/categories/widgets/shopping_list_item.dart';
 import 'package:chapa_admin/navigation_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
+import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
 import 'package:chapa_admin/widgets/input_fields/text_field.dart';
 import 'package:chapa_admin/widgets/page_loader.dart';
 import 'package:chapa_admin/widgets/primary_btn.dart';
@@ -27,6 +28,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
   final _categoryNameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _specController = TextEditingController();
+  final _minAmountController = TextEditingController();
   final service = locator<CategoryService>();
 
   List<Uint8List> images = [];
@@ -44,7 +46,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
     }
   }
 
-  Future<void> _addCategory(
+  Future<void> _addItem(
       BuildContext context, CategoryService categoryService) async {
     if (!_formKey.currentState!.validate()) return;
     if (images.isNotEmpty) {
@@ -62,6 +64,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
           name: _categoryNameController.text,
           description: _descriptionController.text,
           specifications: _specController.text,
+          minAmount: _minAmountController.text,
           catId: widget.categoriesModel.id,
           colors: selectedColors,
           sizes: selectedSizes,
@@ -259,6 +262,22 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
                                     return null;
                                   },
                                 ),
+                                20.height,
+                                AmountTextField(
+                                  controller: _minAmountController,
+                                  keyboardType: TextInputType.number,
+                                  labelText: 'Min amount that can be ordered',
+                                  hintText: 'Enter min amount',
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter a min amount';
+                                    }
+                                    // if (value.toDouble() == 0) {
+                                    //   return 'Cannot be zero';
+                                    // }
+                                    return null;
+                                  },
+                                ),
                                 12.height,
                                 const Text("Select Colors"),
                                 12.height,
@@ -359,7 +378,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
                     24.height,
                     PrimaryButton(
                       width: context.getWidth(.4),
-                      onPressed: () => _addCategory(context, categoryService),
+                      onPressed: () => _addItem(context, categoryService),
                       label: 'Add Item',
                     ),
                   ],

@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:chapa_admin/modules/categories/models/percentage_inc.dart';
+import 'package:chapa_admin/utils/parser_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CategoriesModel {
@@ -7,7 +9,7 @@ class CategoriesModel {
   final String name;
   final String url;
   final String design_price;
-  // final List<String> printing_services;
+  final List<PercentageIncreaseModel> percentages;
   final String added;
 
   CategoriesModel(
@@ -15,7 +17,7 @@ class CategoriesModel {
       required this.name,
       required this.url,
       required this.design_price,
-      // required this.printing_services,
+      required this.percentages,
       required this.added});
 
   factory CategoriesModel.fromDocumentSnapshot(DocumentSnapshot json) {
@@ -24,11 +26,12 @@ class CategoriesModel {
       name: json['name'],
       url: json['url'],
       design_price: json['design_price'],
-      // printing_services: json['printing_services'] == null
-      //     ? []
-      //     : (json['printing_services'] as List<dynamic>)
-      //         .map((e) => e?.toString() ?? "")
-      //         .toList(),
+      percentages: json['percentages'] == null
+          ? []
+          : ParserUtil<PercentageIncreaseModel>().parseJsonList2(
+              json: json['percentages'],
+              fromJson: (e) => PercentageIncreaseModel.fromJson(e),
+            ),
       added: json['added'],
     );
   }

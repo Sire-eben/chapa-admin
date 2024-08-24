@@ -5,7 +5,6 @@ import 'package:chapa_admin/utils/parser_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'print_service.dart';
-import 'review_model.dart';
 
 class SubCategoriesModel {
   final String id;
@@ -15,6 +14,7 @@ class SubCategoriesModel {
   final List<String> images;
   final List<String> size;
   final String specifications;
+  final String min_amount;
   final String description;
   final String added;
   final String design_price;
@@ -27,6 +27,7 @@ class SubCategoriesModel {
       id: json.id,
       name: json['name'] ?? "",
       description: json['description'] ?? "",
+      min_amount: json['min_amount'] ?? "",
       cat_id: json['cat_id'] ?? "",
       added: json['added'] ?? "",
       design_price: json['design_price'] ?? "",
@@ -70,6 +71,7 @@ class SubCategoriesModel {
     required this.size,
     required this.specifications,
     required this.description,
+    required this.min_amount,
     required this.added,
     required this.design_price,
     required this.qualities,

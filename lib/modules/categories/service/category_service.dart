@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:chapa_admin/handlers/base_change_notifier.dart';
+import 'package:chapa_admin/modules/categories/models/percentage_inc.dart';
 import 'package:chapa_admin/modules/categories/models/print_service.dart';
 import 'package:chapa_admin/modules/categories/models/quality.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
@@ -146,23 +147,38 @@ class CategoryService extends BaseChangeNotifier {
     return false;
   }
 
-  // List<Map<String, dynamic>> convertPrintToMap(
-  //     List<PrintingServicesModel> printServices) {
-  //   return printServices.map((order) {
-  //     return {
-  //       "id": order.id,
-  //       "name": order.name,
-  //       "price": order.price,
-  //       "unit": order.unit,
-  //       "added": order.added,
-  //     };
-  //   }).toList();
-  // }
+  final List<PercentageIncrease> _percentageIncrease = [
+    PercentageIncrease(name: "1 - 6", price: 0.0),
+    PercentageIncrease(name: "6 - 12", price: 0.0),
+    PercentageIncrease(name: "12 - 24", price: 0.0),
+    PercentageIncrease(name: "30 -100", price: 0.0),
+    PercentageIncrease(name: "101 - 200", price: 0.0),
+    PercentageIncrease(name: "201 - 1000", price: 0.0),
+  ];
+
+  List<PercentageIncrease> get percentageIncrease => _percentageIncrease;
+
+  void updatePercentageIncrease(int index, PercentageIncrease item) {
+    _percentageIncrease[index] = item;
+    notifyListeners();
+  }
+
+  List<Map<String, dynamic>> getPecentageDetails() {
+    return _percentageIncrease
+        .where((element) => element.price != 0)
+        .map((order) {
+          return {
+            'name': order.name,
+            'price': order.price.toInt(),
+          };
+        })
+        .where((data) => data["name"] != "" || data["price"] != 0)
+        .toList();
+  }
 
   Future<void> addCategory(
       {required String name,
       required String designPrice,
-      // required List<String> printServices,
       required String imageUrl}) async {
     try {
       setLoading = true;
@@ -172,7 +188,7 @@ class CategoryService extends BaseChangeNotifier {
         'name': name,
         'url': imageUrl,
         'design_price': designPrice,
-        // 'printing_services': printServices,
+        'percentages': getPecentageDetails(),
         'added': now,
       });
       handleSuccess();
@@ -196,7 +212,7 @@ class CategoryService extends BaseChangeNotifier {
         'name': name,
         'url': imageUrl,
         'design_price': designPrice,
-        // 'printing_services': printServices,
+        'percentages': getPecentageDetails(),
         'updated': now,
       });
       handleSuccess();
@@ -320,6 +336,7 @@ class CategoryService extends BaseChangeNotifier {
     required String name,
     required String designPrice,
     required String description,
+    required String minAmount,
     required String specifications,
     required List<String> images,
     required List<String> colors,
@@ -339,6 +356,7 @@ class CategoryService extends BaseChangeNotifier {
         'description': description,
         'design_price': designPrice,
         'specifications': specifications,
+        'min_amount': minAmount,
         'qualities': getQualityDetails(),
         'images': images,
         'color': colors,
@@ -395,12 +413,15 @@ class CategoryService extends BaseChangeNotifier {
     required String designPrice,
     required String description,
     required String specifications,
+    required String minAmount,
     required List<String> images,
     required List<String> colors,
     required List<String> sizes,
   }) async {
     try {
       setLoading = true;
+
+      // print(getQualityDetails());
       // final docId = Utils.generateRandomDocIDs();
       final now = Utils.getTimestamp();
       await _firestore
@@ -416,6 +437,7 @@ class CategoryService extends BaseChangeNotifier {
         'design_price': designPrice,
         'qualities': getQualityDetails(),
         'specifications': specifications,
+        'min_amount': minAmount,
         'images': images,
         'color': colors,
         'size': sizes,

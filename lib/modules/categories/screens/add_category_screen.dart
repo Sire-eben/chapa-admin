@@ -1,7 +1,7 @@
 import 'package:chapa_admin/generated/assets.gen.dart';
 import 'package:chapa_admin/handlers/snackbar.dart';
-import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
+import 'package:chapa_admin/modules/categories/widgets/percentage_items.dart';
 import 'package:chapa_admin/utils/__utils.dart';
 import 'package:chapa_admin/widgets/image.dart';
 import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
@@ -119,32 +119,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CustomTextField(
-                          controller: _categoryNameController,
-                          labelText: 'Category Name',
-                          hintText: 'Enter Category Name',
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a category name';
-                            }
-                            return null;
-                          },
-                        ),
-                        20.height,
-                        AmountTextField(
-                          controller: _categoryPriceController,
-                          labelText: 'Category Design Price',
-                          hintText: 'Enter Design Price',
-                          prefixText: "${AppStrings.naira}  ",
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: false),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a price';
-                            }
-                            return null;
-                          },
-                        ),
                         20.height,
                         if (image == null)
                           SizedBox(
@@ -179,6 +153,60 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                         ElevatedButton(
                           onPressed: () => _selectFile(),
                           child: const Text('Select Icon'),
+                        ),
+                        20.height,
+                        CustomTextField(
+                          controller: _categoryNameController,
+                          labelText: 'Category Name',
+                          hintText: 'Enter Category Name',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a category name';
+                            }
+                            return null;
+                          },
+                        ),
+                        20.height,
+                        AmountTextField(
+                          controller: _categoryPriceController,
+                          labelText: 'Category Design Price',
+                          hintText: 'Enter Design Price',
+                          prefixText: "${AppStrings.naira}  ",
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: false),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a price';
+                            }
+                            return null;
+                          },
+                        ),
+                        12.height,
+                        const Text("Set percentage offers"),
+                        20.height,
+                        IntrinsicHeight(
+                          child: Container(
+                            height: 400,
+                            width: 500,
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(
+                                  color: AppColors.primary,
+                                )),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              // physics: const NeverScrollableScrollPhysics(),
+                              itemCount:
+                                  categoryService.percentageIncrease.length,
+                              itemBuilder: (context, index) {
+                                return PercentageItems(
+                                  index: index,
+                                );
+                              },
+                            ),
+                          ),
                         ),
                         20.height,
                         PrimaryButton(

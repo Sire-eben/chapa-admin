@@ -1,9 +1,12 @@
+import 'package:chapa_admin/generated/assets.gen.dart';
 import 'package:chapa_admin/handlers/snackbar.dart';
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
+import 'package:chapa_admin/modules/categories/widgets/percentage_items.dart';
 import 'package:chapa_admin/navigation_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
+import 'package:chapa_admin/widgets/image.dart';
 import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
 import 'package:chapa_admin/widgets/input_fields/text_field.dart';
 import 'package:chapa_admin/widgets/page_loader.dart';
@@ -131,6 +134,42 @@ class _EditCategoryState extends State<EditCategory> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        20.height,
+                        if (image == null)
+                          SizedBox(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                LocalSvgIcon(
+                                  Assets.icons.bulk.image,
+                                  size: 80,
+                                  color: AppColors.primary,
+                                ),
+                                Text(selectedFile)
+                              ],
+                            ),
+                          ),
+                        20.height,
+                        if (image != null)
+                          SizedBox(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.memory(
+                                  image!,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                ),
+                                Text(selectedFile)
+                              ],
+                            ),
+                          ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () => _selectFile(),
+                          child: const Text('Select Icon'),
+                        ),
+                        20.height,
                         CustomTextField(
                           controller: _categoryNameController,
                           labelText: 'Category Name',
@@ -157,25 +196,32 @@ class _EditCategoryState extends State<EditCategory> {
                             return null;
                           },
                         ),
+                        12.height,
+                        const Text("Set percentage offers"),
                         20.height,
-                        if (image != null)
-                          SizedBox(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.memory(
-                                  image!,
-                                  height: 200,
-                                  fit: BoxFit.cover,
-                                ),
-                                Text(selectedFile)
-                              ],
+                        IntrinsicHeight(
+                          child: Container(
+                            height: 400,
+                            width: 500,
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(22),
+                                border: Border.all(
+                                  color: AppColors.primary,
+                                )),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              // physics: const NeverScrollableScrollPhysics(),
+                              itemCount:
+                                  categoryService.percentageIncrease.length,
+                              itemBuilder: (context, index) {
+                                return PercentageItems(
+                                  index: index,
+                                );
+                              },
                             ),
                           ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () => _selectFile(),
-                          child: const Text('Select Icon'),
                         ),
                         20.height,
                         PrimaryButton(

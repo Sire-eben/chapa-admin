@@ -38,7 +38,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
 
     Query query = storesRef;
 
-    return query.snapshots();
+    return query.orderBy("added").snapshots();
   }
 
   @override
@@ -72,7 +72,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-        body: Center(
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -145,20 +145,12 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                                 child: Text("Item Prices",
                                     style: AppStyles.urbanist16Md),
                               )),
-                              // 20.width,
-                              // Expanded(
-                              //     child: Center(
-                              //   child: Text("Design Price",
-                              //       style: AppStyles.urbanist16Md),
-                              // )),
-                              // 20.width,
-                              // Expanded(
-                              //     child: Text("Specifications",
-                              //         style: AppStyles.urbanist16Md)),
                               20.width,
                               Expanded(
-                                  child: Text("Printing Services",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Min Order",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
                                   child: Center(

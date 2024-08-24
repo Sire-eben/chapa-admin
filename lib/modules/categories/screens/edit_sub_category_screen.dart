@@ -35,6 +35,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
   final _categoryNameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _specController = TextEditingController();
+  final _minAmountController = TextEditingController();
   final service = locator<CategoryService>();
 
   List<Uint8List> images = [];
@@ -70,6 +71,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
           name: _categoryNameController.text,
           description: _descriptionController.text,
           specifications: _specController.text,
+          minAmount: _minAmountController.text,
           catId: widget.categoriesModel.id,
           subcatId: widget.subCategoriesModel.id,
           colors: selectedColors,
@@ -112,6 +114,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
       _categoryNameController.text = widget.subCategoriesModel.name;
       _descriptionController.text = widget.subCategoriesModel.description;
       _specController.text = widget.subCategoriesModel.specifications;
+      _minAmountController.text = widget.subCategoriesModel.min_amount;
       selectedColors.addAll(widget.subCategoriesModel.color);
       selectedSizes.addAll(widget.subCategoriesModel.size);
       _isAssigning = false;
@@ -274,6 +277,18 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter a category name';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                20.height,
+                                CustomTextField(
+                                  controller: _minAmountController,
+                                  labelText: 'Min amount that can be ordered',
+                                  hintText: 'Enter min amount',
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter a min amount';
                                     }
                                     return null;
                                   },

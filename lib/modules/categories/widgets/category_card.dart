@@ -53,25 +53,34 @@ class CategoryCard extends StatelessWidget {
               Expanded(
                   child: Text(Utils.formatAmount(data.design_price),
                       style: AppStyles.urbanist14Md)),
-              // 30.width,
-              // Expanded(
-              //     child: ListView.builder(
-              //         shrinkWrap: true,
-              //         physics: NeverScrollableScrollPhysics(),
-              //         padding: EdgeInsets.zero,
-              //         itemCount: categoryService
-              //             .getPrintServices(data.printing_services)
-              //             .length,
-              //         itemBuilder: (_, index) {
-              //           final service = categoryService
-              //               .getPrintServices(data.printing_services)[index];
-              //           return Text(
-              //               "${service.name} - ${Utils.formatAmount(service.price)}",
-              //               style: AppStyles.urbanist14Md);
-              //         })),
+              30.width,
+              Expanded(
+                child: Center(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        data.percentages
+                            .map((size) => "${size.name.capitalize} :: ")
+                            .join('\n'),
+                        textAlign: TextAlign.right,
+                        style: AppStyles.urbanist14Smbd,
+                      ),
+                      // const Text(" - "),
+                      Text(
+                        data.percentages
+                            .map((size) => " ${size.price} %")
+                            .join('\n'),
+                        style: AppStyles.urbanist14Smbd,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               30.width,
               Expanded(child: Text(Utils().formatDate(data.added))),
-              20.width,
+              30.width,
               Expanded(
                   child: Row(
                 children: [
