@@ -2,6 +2,7 @@ import 'package:chapa_admin/generated/assets.gen.dart';
 import 'package:chapa_admin/handlers/alert_dialog_handler.dart';
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/categories.dart';
+import 'package:chapa_admin/modules/categories/screens/edit_category.dart';
 import 'package:chapa_admin/modules/categories/screens/sub_categories.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
 import 'package:chapa_admin/navigation_service.dart';
@@ -20,7 +21,6 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("========== ${data.printing_services}");
     return IntrinsicWidth(
       child: Container(
         width: context.getWidth(.4),
@@ -55,29 +55,46 @@ class CategoryCard extends StatelessWidget {
                       style: AppStyles.urbanist14Md)),
               30.width,
               Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemCount: categoryService
-                          .getPrintServices(data.printing_services)
-                          .length,
-                      itemBuilder: (_, index) {
-                        final service = categoryService
-                            .getPrintServices(data.printing_services)[index];
-                        return Text(
-                            "${service.name} - ${Utils.formatAmount(service.price)}",
-                            style: AppStyles.urbanist14Md);
-                      })),
+                child: Center(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        data.percentages
+                            .map((size) => "${size.name.capitalize} :: ")
+                            .join('\n'),
+                        textAlign: TextAlign.right,
+                        style: AppStyles.urbanist14Smbd,
+                      ),
+                      // const Text(" - "),
+                      Text(
+                        data.percentages
+                            .map((size) => " ${size.price} %")
+                            .join('\n'),
+                        style: AppStyles.urbanist14Smbd,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               30.width,
               Expanded(child: Text(Utils().formatDate(data.added))),
-              20.width,
+              30.width,
               Expanded(
                   child: Row(
                 children: [
                   LocalSvgIcon(Assets.icons.linear.eye),
                   10.width,
-                  LocalSvgIcon(Assets.icons.linear.edit),
+                  InkWell(
+                      onTap: () {
+                        AlertDialogHandler.showAlertDialog(
+                            context: context,
+                            child: EditCategory(categoriesModel: data),
+                            isLoading: categoryService.isLoading,
+                            heading: "Edit ${data.name}");
+                      },
+                      child: LocalSvgIcon(Assets.icons.linear.edit)),
                   10.width,
                   InkWell(
                       onTap: () {

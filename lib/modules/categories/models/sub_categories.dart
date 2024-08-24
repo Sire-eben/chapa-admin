@@ -1,9 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:chapa_admin/modules/categories/models/quality.dart';
 import 'package:chapa_admin/utils/parser_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'review_model.dart';
+import 'print_service.dart';
 
 class SubCategoriesModel {
   final String id;
@@ -13,12 +14,12 @@ class SubCategoriesModel {
   final List<String> images;
   final List<String> size;
   final String specifications;
+  final String min_amount;
   final String description;
   final String added;
-  final String higher_price;
-  final String lower_price;
   final String design_price;
-  final List<ReviewModel> reviews;
+  final List<ItemQualityModel> qualities;
+  final List<PrintServiceModel> printing_services;
 
   factory SubCategoriesModel.fromDocumentSnapshot(DocumentSnapshot json) {
     // final data = Map<String, dynamic>.from(json);
@@ -26,10 +27,9 @@ class SubCategoriesModel {
       id: json.id,
       name: json['name'] ?? "",
       description: json['description'] ?? "",
+      min_amount: json['min_amount'] ?? "",
       cat_id: json['cat_id'] ?? "",
       added: json['added'] ?? "",
-      higher_price: json['higher_price'] ?? "",
-      lower_price: json['lower_price'] ?? "",
       design_price: json['design_price'] ?? "",
       color: json['color'] == null
           ? []
@@ -47,34 +47,34 @@ class SubCategoriesModel {
           : (json['images'] as List<dynamic>)
               .map((e) => e?.toString() ?? "")
               .toList(),
-      reviews: json['reviews'] == null
+      qualities: json['qualities'] == null
           ? []
-          : ParserUtil<ReviewModel>().parseJsonList(
-              json: json['reviews'],
-              fromJson: (e) => ReviewModel.fromDocumentSnapshot(e),
+          : ParserUtil<ItemQualityModel>().parseJsonList2(
+              json: json['qualities'],
+              fromJson: (e) => ItemQualityModel.fromJson(e),
+            ),
+      printing_services: json['printing_services'] == null
+          ? []
+          : ParserUtil<PrintServiceModel>().parseJsonList2(
+              json: json['printing_services'],
+              fromJson: (e) => PrintServiceModel.fromJson(e),
             ),
     );
   }
 
-  SubCategoriesModel(
-      {required this.id,
-      required this.name,
-      required this.cat_id,
-      required this.color,
-      required this.images,
-      required this.size,
-      required this.specifications,
-      required this.description,
-      required this.added,
-      required this.higher_price,
-      required this.lower_price,
-      required this.design_price,
-      required this.reviews});
+  SubCategoriesModel({
+    required this.id,
+    required this.name,
+    required this.cat_id,
+    required this.color,
+    required this.images,
+    required this.size,
+    required this.specifications,
+    required this.description,
+    required this.min_amount,
+    required this.added,
+    required this.design_price,
+    required this.qualities,
+    required this.printing_services,
+  });
 }
-
-
-// List<IsusuModel>.from(
-//             json['data'].map(
-//               (e) => IsusuModel.fromJson(e),
-//             ),
-//           );

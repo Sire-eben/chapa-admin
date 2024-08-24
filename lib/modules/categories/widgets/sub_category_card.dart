@@ -1,7 +1,9 @@
 import 'package:chapa_admin/generated/assets.gen.dart';
 import 'package:chapa_admin/handlers/alert_dialog_handler.dart';
 import 'package:chapa_admin/locator.dart';
+import 'package:chapa_admin/modules/categories/models/categories.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
+import 'package:chapa_admin/modules/categories/screens/edit_sub_category_screen.dart';
 import 'package:chapa_admin/modules/categories/screens/view_sub_category_screen.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
 import 'package:chapa_admin/navigation_service.dart';
@@ -17,8 +19,10 @@ class SubCategoryCard extends StatelessWidget {
       {super.key,
       required this.data,
       required this.index,
-      required this.categoryService});
+      required this.categoryService,
+      required this.categoriesModel});
   final SubCategoriesModel data;
+  final CategoriesModel categoriesModel;
   final int index;
   final CategoryService categoryService;
 
@@ -43,7 +47,10 @@ class SubCategoryCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("${index + 1}"),
+            CircleAvatar(
+                radius: 12,
+                backgroundColor: AppColors.idleState,
+                child: Text("${index + 1}.")),
             Gap(context.getWidth(.015)),
             CachedImageWidget(
               imageUrl: data.images.first,
@@ -51,28 +58,66 @@ class SubCategoryCard extends StatelessWidget {
               borderRadius: 1,
             ),
             Gap(context.getWidth(.015)),
-            Expanded(child: Text(data.name, style: AppStyles.urbanist14Md)),
-            20.width,
-            Expanded(child: Text(data.size.first)),
-            20.width,
-            Expanded(child: Text(data.color.first)),
+            Expanded(
+                child: Center(
+                    child: Text(data.name, style: AppStyles.urbanist14Md))),
+            if (data.size.isNotEmpty) ...[
+              20.width,
+              Expanded(
+                  child: Center(
+                child: Text(
+                  data.size.map((size) => size.capitalize).join(', '),
+                  textAlign: TextAlign.center,
+                ),
+              )),
+            ] else ...[
+              20.width,
+              const Expanded(child: Text("No Colors")),
+            ],
+            if (data.color.isNotEmpty) ...[
+              20.width,
+              Expanded(
+                  child: Center(
+                child: Text(
+                  data.color.map((color) => color.capitalize).join(', '),
+                  textAlign: TextAlign.center,
+                ),
+              )),
+            ] else ...[
+              20.width,
+              const Expanded(child: Text("No Sizes")),
+            ],
             20.width,
             Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Fair Quality - ${Utils.formatAmount(data.lower_price)}"),
-                Text("High Quality - ${Utils.formatAmount(data.higher_price)}"),
-              ],
-            )),
+              child: Center(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      data.qualities
+                          .map((size) => size.name.capitalize)
+                          .join('\n'),
+                    ),
+                    const Text(" - "),
+                    Text(
+                      data.qualities
+                          .map((size) =>
+                              Utils.formatAmount(size.price.toString()))
+                          .join('\n'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             20.width,
             Expanded(
-                child:
-                    Center(child: Text(Utils.formatAmount(data.design_price)))),
+                child: Center(
+                    child:
+                        Text(data.min_amount, style: AppStyles.urbanist14Md))),
             20.width,
-            Expanded(child: Text(data.specifications)),
-            20.width,
-            Expanded(child: Text(Utils().formatDate(data.added))),
+            Expanded(
+                child: Center(child: Text(Utils().formatDate(data.added)))),
             20.width,
             Expanded(
                 child: Row(
@@ -88,7 +133,19 @@ class SubCategoryCard extends StatelessWidget {
                     },
                     child: LocalSvgIcon(Assets.icons.linear.eye)),
                 10.width,
-                LocalSvgIcon(Assets.icons.linear.edit),
+                InkWell(
+                    onTap: () {
+                      AlertDialogHandler.showAlertDialog(
+                          context: context,
+                          child: EditSubCategoryScreen(
+                            isEdit: true,
+                            categoriesModel: categoriesModel,
+                            subCategoriesModel: data,
+                          ),
+                          isLoading: categoryService.isLoading,
+                          heading: "Edit ${data.name}");
+                    },
+                    child: LocalSvgIcon(Assets.icons.linear.edit)),
                 10.width,
                 InkWell(
                     onTap: () {
@@ -100,8 +157,11 @@ class SubCategoryCard extends StatelessWidget {
                                 .deleteSubcategory(
                                     id: data.id, catId: data.cat_id)
                                 .whenComplete(
-                                  () => locator<NavigationService>().goBack(),
-                                );
+                              () {
+                                categoryService.getSubcategories(data.cat_id);
+                                locator<NavigationService>().goBack();
+                              },
+                            );
                           });
                     },
                     child: LocalSvgIcon(Assets.icons.linear.trash)),

@@ -7,5 +7,5 @@ class AppCollections {
   static const subcategories = "SUB-CATEGORIES";
   static const colors = "COLORS";
   static const sizes = "SIZES";
-  static const printingServices = "PRINTING SERVICES";
+  static const printingQualities = "PRINTING QUALITIES";
 }

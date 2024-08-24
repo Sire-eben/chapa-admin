@@ -14,7 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
-import 'add_sub_category_screen.dart';
+import 'add_item.dart';
 
 class SubCategoriesScreen extends StatefulWidget {
   const SubCategoriesScreen({super.key, required this.categoriesModel});
@@ -38,7 +38,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
 
     Query query = storesRef;
 
-    return query.snapshots();
+    return query.orderBy("added").snapshots();
   }
 
   @override
@@ -64,20 +64,20 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                 child: AddSubCategoryScreen(
                     categoriesModel: widget.categoriesModel),
                 isLoading: categoryService.isLoading,
-                heading: "Add sub category");
+                heading: "Add New Item");
           },
           label: Text(
-            "Add New Sub Category",
+            "Add New Item",
             style: AppStyles.urbanist14Smbd.copyWith(color: Colors.white),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-        body: Center(
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               30.height,
-              Text('All Sub Categories for ${widget.categoriesModel.name}',
+              Text('All items for ${widget.categoriesModel.name}',
                   style: GoogleFonts.urbanist(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -118,35 +118,45 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                             children: [
                               Text("S/N", style: AppStyles.urbanist16Md),
                               10.width,
-                              Text("Image", style: AppStyles.urbanist16Md),
-                              20.width,
-                              Expanded(
-                                  child: Text("Name",
+                              Center(
+                                  child: Text("Image",
                                       style: AppStyles.urbanist16Md)),
                               20.width,
                               Expanded(
-                                  child: Text("Sizes",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child:
+                                    Text("Name", style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
-                                  child: Text("Colors",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Sizes",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
-                                  child: Text("Item Prices",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Colors",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
-                                  child: Text("Design Price",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Item Prices",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
-                                  child: Text("Specifications",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Min Order",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
-                                  child: Text("Date Added",
-                                      style: AppStyles.urbanist16Md)),
+                                  child: Center(
+                                child: Text("Date Added",
+                                    style: AppStyles.urbanist16Md),
+                              )),
                               20.width,
                               Expanded(
                                   child: Text("Actions",
@@ -168,6 +178,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                               data: category,
                               index: index,
                               categoryService: categoryService,
+                              categoriesModel: widget.categoriesModel,
                             );
                           },
                         ),

@@ -1,11 +1,10 @@
 import 'package:chapa_admin/locator.dart';
 import 'package:chapa_admin/modules/categories/models/sub_categories.dart';
 import 'package:chapa_admin/modules/categories/service/category_service.dart';
+import 'package:chapa_admin/modules/categories/widgets/shopping_list_item_for_view.dart';
 import 'package:chapa_admin/navigation_service.dart';
 import 'package:chapa_admin/utils/__utils.dart';
-import 'package:chapa_admin/utils/app_themes.dart';
 import 'package:chapa_admin/widgets/cached_image_widget.dart';
-import 'package:chapa_admin/widgets/input_fields/amount_text_field.dart';
 import 'package:chapa_admin/widgets/input_fields/text_field.dart';
 import 'package:chapa_admin/widgets/page_loader.dart';
 import 'package:chapa_admin/widgets/primary_btn.dart';
@@ -69,36 +68,39 @@ class _ViewSubCategoryScreenState extends State<ViewSubCategoryScreen> {
                                 },
                               ),
                               20.height,
-                              AmountTextField(
-                                enabled: false,
-                                labelText: 'Low quality price',
-                                hintText: Utils.formatAmount(data.lower_price),
-                                prefixText: AppStrings.naira + "  ",
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        decimal: false),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a price';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              20.height,
-                              AmountTextField(
-                                enabled: false,
-                                labelText: 'High quality price',
-                                hintText: Utils.formatAmount(data.higher_price),
-                                prefixText: AppStrings.naira + "  ",
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        decimal: false),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a price';
-                                  }
-                                  return null;
-                                },
+                              Container(
+                                height: 300,
+                                width: 500,
+                                padding: EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(22),
+                                    border: Border.all(
+                                      color: AppColors.primary,
+                                    )),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "Qualities for this item",
+                                        style: AppStyles.urbanist16SmBd,
+                                      ),
+                                      10.height,
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        padding: EdgeInsets.zero,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: data.qualities.length,
+                                        itemBuilder: (context, index) {
+                                          final item = data.qualities[index];
+                                          return ShoppingListItemForView(
+                                            item: item,
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -139,6 +141,18 @@ class _ViewSubCategoryScreenState extends State<ViewSubCategoryScreen> {
                                 hintText: data.specifications,
                                 textInputAction: TextInputAction.newline,
                                 maxLines: 5,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a category name';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              20.height,
+                              CustomTextField(
+                                enabled: false,
+                                labelText: 'Min Order',
+                                hintText: data.min_amount,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter a category name';
@@ -213,6 +227,7 @@ class _ViewSubCategoryScreenState extends State<ViewSubCategoryScreen> {
                         )
                       ],
                     ),
+                    24.height,
                     PrimaryButton(
                       width: context.getWidth(.4),
                       onPressed: () => locator<NavigationService>().goBack(),

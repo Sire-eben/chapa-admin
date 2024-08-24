@@ -4,7 +4,7 @@ import 'package:chapa_admin/modules/authentication/screens/login_screen.dart';
 import 'package:chapa_admin/modules/categories/screens/add_category_screen.dart';
 import 'package:chapa_admin/modules/categories/screens/categories.dart';
 import 'package:chapa_admin/modules/dashboard/screens/dashboard.dart';
-import 'package:chapa_admin/modules/printing_services/screens/printing_services.dart';
+import 'package:chapa_admin/modules/printing_qualities/screens/printing_qualities.dart';
 import 'package:chapa_admin/modules/users/screens/users.dart';
 import 'package:chapa_admin/modules/utilities/screens/utilities.dart';
 import 'package:flutter/material.dart';

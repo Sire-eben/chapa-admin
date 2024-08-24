@@ -2,9 +2,9 @@
 
 # Update These Variables
 BASE_HREF = '/'
-GITHUB_REPO = git@github.com/Sire-eben/chapa-admin.git
+GITHUB_REPO = git@github.com:chapa-links/chapa-admin.git
 BUILD_VERSION := $(shell grep 'version:' pubspec.yaml | awk '{print $$2}')
-CUSTOM_DOMAIN = app.capfieldsevolve.com 
+CUSTOM_DOMAIN = chapa-admin.capfieldsevolve.com
 
 deploy-web:
 	@echo "======================== Clean existing repository...======================== "
